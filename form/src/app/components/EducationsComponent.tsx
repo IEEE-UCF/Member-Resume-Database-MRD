@@ -25,7 +25,7 @@ const EducationsComponent = ({
                         <h4>Education {index + 1}</h4>
                         <input
                             type="text"
-                            name={`education[${index}].name`}
+                            name={`educations[${index}].name`}
                             placeholder="School Name"
                             value={education.name}
                             onChange={(e) =>
