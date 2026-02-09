@@ -1,4 +1,4 @@
-# Member-Resume-Database
+# Member Portfolio Service (MPS)
 The following document describes the structure of the code of version 1 of the Resume Database Infrastructure (RDI).
 
 ## Contents
