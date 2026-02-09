@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import type { Form } from "../interfaces";
+import { setBio } from "../utils/onChanges"
 
 type BioComponentProps = {
     bio: string;
@@ -16,9 +17,7 @@ const BioComponent = ({
             <textarea
                 name="bio"
                 value={bio}
-                onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, bio: e.target.value }))
-                }
+                onChange={(e) => setBio(e.target.value, setFormData)}
                 rows={5}
             />
         </>
