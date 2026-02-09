@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
+import * as validations from "./validations"
+
 import { Form } from "../interfaces";
 
 // Bio          
@@ -7,9 +9,11 @@ export const setBio = (
     newValue: string,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    setFormData(
-        (prev) => ({ ...prev, bio: newValue })
-    )
+    if(validations.validateBio(newValue)) {
+        setFormData(
+            (prev) => ({ ...prev, bio: newValue })
+        )
+    }
 }
 
 // Clubs
