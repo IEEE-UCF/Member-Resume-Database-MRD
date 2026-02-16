@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-
-import { Form } from "../interfaces"
+import { setGraduationYear } from "../utils/onChanges";
+import { Form } from "../interfaces";
 
 interface GraduationYearComponentProps {
     graduationYear: number;
@@ -20,12 +20,7 @@ const GraduationYearComponent = ({
                 min={2020}
                 max={2035}
                 value={graduationYear}
-                onChange={e =>
-                    setFormData(prev => ({
-                        ...prev,
-                        graduationYear: Number(e.target.value)
-                    }))
-                }
+                onChange={e => setGraduationYear(e.target.value, setFormData)}
             />
         </div>
     );

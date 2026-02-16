@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { ucfMajors } from "../data/majors";
 import type { Form } from "../interfaces";
+import { setMajor } from "../utils/onChanges";
 
 type MajorComponentProps = {
     major: string;
@@ -17,9 +18,7 @@ const MajorComponent = ({
             <select
                 name="major"
                 value={major}
-                onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, major: e.target.value }))
-                }
+                onChange={(e) => setMajor(e.target.value, setFormData)}
             >
                 <option value="">Select Major</option>
                 {ucfMajors.map((m, i) => (
