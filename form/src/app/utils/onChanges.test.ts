@@ -39,6 +39,14 @@ test("properly validated the bio input", () => {
 
 
 // School Year
+const schoolYear = "2029"
+const notSelected = "0"
+
+test("Properly validated the schoolYear input", () =>{
+    expect(validations.validateSchoolYear(schoolYear)).toBe(true)
+    expect(validations.validateSchoolYear(notSelected)).toBe(false)
+
+})
 
 
 // Skills
