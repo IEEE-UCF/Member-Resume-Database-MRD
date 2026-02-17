@@ -3,6 +3,8 @@ import { Dispatch, SetStateAction } from "react"
 import type { Education, Form } from "../interfaces";
 import { createEmptyEducation } from "../interfaces";
 
+import { setEducationDegree } from "../utils/onChanges"
+
 import formStyles from "../styles/form.module.css"
 
 type EducationsComponentProps = {
@@ -23,7 +25,7 @@ const EducationsComponent = ({
                         <h4>Education {index + 1}</h4>
                         <input
                             type="text"
-                            name={`education[${index}].name`}
+                            name={`educations[${index}].name`}
                             placeholder="School Name"
                             value={education.name}
                             onChange={(e) =>
@@ -39,13 +41,7 @@ const EducationsComponent = ({
                             name={`educations[${index}].degree`}
                             placeholder="Degree"
                             value={education.degree}
-                            onChange={(e) =>
-                                setFormData((prev) => {
-                                    const updated = [...prev.educations];
-                                    updated[index].degree = e.target.value;
-                                    return { ...prev, educations: updated };
-                                })                            
-                            }
+                            onChange={(e) => setEducationDegree(e.target.value, index, setFormData)}
                         />
                         <input
                             type="number"

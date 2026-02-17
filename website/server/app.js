@@ -14,7 +14,7 @@ let latestData = null
 
 app.post("/", (req, res) => {
   latestData = req.body
-  res.json({status: "ok"})
+  res.json({status: `you just got a status!`})
 })
 
 app.get('/', (req, res) => {
