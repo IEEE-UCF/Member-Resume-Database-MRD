@@ -18,11 +18,11 @@ export const validateBio = (bio: string) => {
 
 // Graduation 
 export const validateGraduationYear = (graduationYear: string) => {
-    let notNeg = Number(graduationYear) >= 0
+    let tooSmall = Number(graduationYear) >= 1900
     let tooLarge = Number(graduationYear) > 2100
     
     
-    return notNeg && !tooLarge 
+    return tooSmall && !tooLarge 
 }
 
 
@@ -61,7 +61,7 @@ export const validateName = (name: string) => {
 export const validateSchoolYear = (schoolYear: string) => {
     let isSelected = schoolYear.length > 0
     
-    return !isSelected
+    return isSelected
 }
 
 
