@@ -1,0 +1,15 @@
+import { Dispatch, SetStateAction } from "react";
+
+import type { Form } from "../interfaces";
+
+import * as validations from "./validations";
+
+//School
+const schoolYear = "2029"
+const notSelected = "0"
+
+test("Properly validated the schoolYear input", () =>{
+    expect(validations.validateSchoolYear(schoolYear)).toBe(true)
+    expect(validations.validateSchoolYear(notSelected)).toBe(false)
+
+})

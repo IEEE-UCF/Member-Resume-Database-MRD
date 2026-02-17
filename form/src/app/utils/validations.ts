@@ -4,9 +4,9 @@ import type { Form } from "../interfaces";
 
 //School Year
 export const validateSchoolYear = (schoolYear: string) => {
-    let isSelectd = schoolYear.length > 0
+    let isSelected = schoolYear.length > 0
     
-    return !isSelectd
+    return !isSelected
 }
 //Name 
 export const validateName = (name: string) => {
@@ -23,10 +23,14 @@ export const validateMajor = (major: string) => {
 
     return !isSelectd
 }
+//Graduation Year
+export const validateGraduationYear = (graduationYear: string) => {
+    let notNeg = Number(graduationYear) >= 0
+    let tooLarge = Number(graduationYear) > 2100
+    //makes sure years are 4 digits long let yearFormat = /^\d{5}$/.test(graduationYear)
 
-export const validateGraduationYear = (GraduationYear: string) => {
-    let isValidYear = Number(GraduationYear) <= 1800 
+    
+    
 
-
-    return !isValidYear 
+    return notNeg && !tooLarge && //!yearFormat
 }

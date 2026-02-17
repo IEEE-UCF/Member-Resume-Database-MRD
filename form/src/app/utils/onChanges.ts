@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 import type { Form } from "../interfaces";
-import * as validations from "./validations"
+import * as validations from "./validations";
 
 //School Year
 export const setSchoolYear = (
