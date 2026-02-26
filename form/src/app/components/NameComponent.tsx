@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import type { Form } from "../interfaces";
+import { setName } from "../utils/onChanges";
 
 type NameComponentProps = {
     name: string;
@@ -17,9 +18,7 @@ const NameComponent = ({
                 type="text"
                 name="name"
                 value={name}
-                onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, name: e.target.value }))
-                }
+                onChange={(e) => setName(e.target.value, setFormData)}
             />
         </>
     );

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-
 import { type Form } from "../interfaces"
+import { setSchoolYear } from "../utils/onChanges";
 
 interface SchoolYearComponentProps {
     schoolYear: string;
@@ -29,12 +29,7 @@ const SchoolYearComponent = ({
                         name="schoolYear"
                         value={option}
                         checked={schoolYear === option}
-                        onChange={e =>
-                            setFormData(prev => ({
-                                ...prev,
-                                schoolYear: e.target.value
-                            }))
-                        }
+                        onChange={e => setSchoolYear(e.target.value, setFormData)}
                     />
                     {option}
                 </label>
