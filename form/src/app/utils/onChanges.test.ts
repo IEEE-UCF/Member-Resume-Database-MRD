@@ -42,12 +42,15 @@ const emptyLink = ""
 const shortLink = "short.com"
 const longLink = "https://www.suuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuppppperLooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong.com"
 const spaceLink = "https://www.google .com"
+const invalidProtocol = "ftp://www.google.com"
+
 test("properly validated the links input", ()=> {
     expect(validations.validateLinks(link)).toBe(true)
-    expect(validations.validateLinks(link)).toBe(false)
+    expect(validations.validateLinks(emptyLink)).toBe(false)
     expect(validations.validateLinks(shortLink)).toBe(false)
     expect(validations.validateLinks(longLink)).toBe(false)
     expect(validations.validateLinks(spaceLink)).toBe(false)
+    expect(validations.validateLinks(invalidProtocol)).toBe(false)
 })
 
 

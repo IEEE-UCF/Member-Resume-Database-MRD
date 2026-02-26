@@ -36,8 +36,9 @@ export const validateLinks = (link : string) => {
     let strTooSmall = link.length < 10
     let strTooLarge = link.length > 200
     let whiteSpace = (/\s/.test(link))
+    let validProtocol = /^https?:\/\//i.test(link)
     
-    return !isEmpty && !strTooSmall && !strTooLarge && !whiteSpace 
+    return !isEmpty && !strTooSmall && !strTooLarge && !whiteSpace && validProtocol 
 }
 
 
