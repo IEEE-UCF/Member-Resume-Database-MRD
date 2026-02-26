@@ -27,23 +27,28 @@ export const validateGraduationYear = (graduationYear: string) => {
     let isSpecialCharacter = /[@#$%^&*_+=\[\]{};'"\\|<>\/?]/.test(graduationYear)
     let hasLetter = /\D/.test(graduationYear)
     
-    
     return isSelected && !tooSmall && !tooLarge && !strTooLarge  && !isSpecialCharacter && !hasLetter
 }
 
-
 // Links
+export const validateLinks = (link : string) => {
+    let isEmpty = (link.trim() == "")
+    let strTooSmall = link.length < 10
+    let strTooLarge = link.length > 200
+    let whiteSpace = (/\s/.test(link))
+    
+    return !isEmpty && !strTooSmall && !strTooLarge && !whiteSpace 
+}
 
 
 // Major
 export const validateMajor = (major: string) => {
-    let isSelectd = (major != ("Select Major"))
+    let isSelectd = (major !== ("Select Major"))
     let validMajor = ucfMajors.includes(major)
     let strTooSmall = major.length <= 0
     let strTooLarge = major.length > 200
     let isSpecialCharacter = /[@#$%^&*_+=\[\]{};'"\\|<>\/?]/.test(major)
 
-    
     return isSelectd && validMajor && !strTooSmall && !strTooLarge && !isSpecialCharacter
 }
 
@@ -85,7 +90,6 @@ export const validateSchoolYear = (schoolYear: string) => {
     let isSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(schoolYear)
     let hasNumber = /\d/.test(schoolYear)
 
-    
     return isSelected && validSchoolYear && !strTooLarge && !isSpecialCharacter && !hasNumber
 }
 

@@ -37,6 +37,18 @@ test("properly validated the graduation input", ()=> {
 })
 
 // Links
+const link = "https://www.google.com"
+const emptyLink = ""
+const shortLink = "short.com"
+const longLink = "https://www.suuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuppppperLooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong.com"
+const spaceLink = "https://www.google .com"
+test("properly validated the links input", ()=> {
+    expect(validations.validateLinks(link)).toBe(true)
+    expect(validations.validateLinks(link)).toBe(false)
+    expect(validations.validateLinks(shortLink)).toBe(false)
+    expect(validations.validateLinks(longLink)).toBe(false)
+    expect(validations.validateLinks(spaceLink)).toBe(false)
+})
 
 
 // Major
