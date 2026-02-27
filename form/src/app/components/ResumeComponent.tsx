@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-
+import { setResume } from "../utils/onChanges";
 import { type Form } from "../interfaces"
 
 interface ResumeComponentProps {
@@ -19,12 +19,7 @@ const ResumeComponent = ({
                 name="resume"
                 placeholder="https://example.com/resume.pdf"
                 value={resume}
-                onChange={(e) =>
-                    setFormData((prev) => ({
-                        ...prev,
-                        resume: e.target.value,
-                    }))
-                }
+                onChange={(e) => setResume(e.target.value, setFormData)}
             />
         </>
     );

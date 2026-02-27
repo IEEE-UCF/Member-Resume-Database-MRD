@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction } from "react";
 
 import formStyles from "../styles/form.module.css"
 
+import { setClubDetails } from "../utils/onChanges";
+
 import {
     type Experience,
     type Form,
@@ -28,25 +30,13 @@ const ClubsComponent = ({
                         name={`clubs[${index}].name`}
                         placeholder="Club Name"
                         value={club.name}
-                        onChange={(e) =>
-                            setFormData((prev) => {
-                                const updated = [...prev.clubs];
-                                updated[index].name = e.target.value;
-                                return { ...prev, clubs: updated };
-                            })
-                        }
+                        onChange={(e) => setClubDetails(index, "name", e.target.value, setFormData)}
                     />
                     <textarea
                         name={`clubs[${index}].description`}
                         placeholder="Description"
                         value={club.description}
-                        onChange={(e) =>
-                            setFormData((prev) => {
-                                const updated = [...prev.clubs];
-                                updated[index].description = e.target.value;
-                                return { ...prev, clubs: updated };
-                            })
-                        }
+                        onChange={(e) => setClubDetails(index, "description", e.target.value, setFormData)}
                         rows={3}
                     />
                     <input
@@ -54,13 +44,7 @@ const ClubsComponent = ({
                         name={`clubs[${index}].title`}
                         placeholder="Your Title"
                         value={club.title}
-                        onChange={(e) =>
-                            setFormData((prev) => {
-                                const updated = [...prev.clubs];
-                                updated[index].title = e.target.value;
-                                return { ...prev, clubs: updated };
-                            })
-                        }
+                        onChange={(e) => setClubDetails(index, "title", e.target.value, setFormData)}
                     />
                     <button
                         onClick={(e) => {
