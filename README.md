@@ -1,5 +1,5 @@
-# Member Portfolio Service (MPS)
-The following document describes the structure of the code of version 1 of the Member Portfolio Service (MPS).
+# Member Resume Database (MRD)
+The following document describes the structure of the code of version 1 of the Member Resume Database (MRD).
 
 ## Contents
 <ul>
