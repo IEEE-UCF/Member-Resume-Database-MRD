@@ -9,11 +9,9 @@ export const setBio = (
     newValue: string,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    if(validations.validateBio(newValue)) {
-        setFormData(
-            (prev) => ({ ...prev, bio: newValue })
-        )
-    }
+    setFormData(
+        (prev) => ({ ...prev, bio: newValue })
+    )
 }
 
 // Clubs
