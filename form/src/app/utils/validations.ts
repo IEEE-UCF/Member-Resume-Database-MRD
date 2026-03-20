@@ -5,11 +5,21 @@ import { Form } from "../interfaces";
 import { ucfMajors } from "../data/majors";
 
 // Bio
-export const validateBio = (bio: string) => {
+export const validateBio = (bio: string): string[] => {
+    const errors: string[] = []
+
     let strTooSmall = bio.length <= 0
     let strTooLarge = bio.length > 8
 
-    return !strTooSmall && !strTooLarge
+    if(strTooSmall) {
+        errors.push("Bio input is too small.")
+    }
+
+    if(strTooLarge) {
+        errors.push("Bio input is too large.")
+    }
+
+    return errors
 }
 
 // Clubs
