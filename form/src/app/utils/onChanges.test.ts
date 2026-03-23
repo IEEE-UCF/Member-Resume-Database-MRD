@@ -12,7 +12,35 @@ test("properly validated the bio input", () => {
 })
 
 // Clubs
-                    
+const validClubName = "omom";
+const invalidClubName = "a".repeat(51);
+const emptyClubName = "";
+
+const validClubDescription = "klndfdklndklnvdlkvndlkvndlkfdndklnvdklnvd";
+const invalidClubDescription = "a".repeat(201);
+const emptyClubDescription = "";
+
+const validClubTitle = "President";
+const invalidClubTitle = "a".repeat(51);
+const emptyClubTitle = "";
+
+test("properly validated the club name input", () => {
+    expect(validations.validateClubName(validClubName)).toBe(true);
+    expect(validations.validateClubName(invalidClubName)).toBe(false);
+    expect(validations.validateClubName(emptyClubName)).toBe(true);
+});
+
+test("properly validated the club description input", () => {
+    expect(validations.validateClubDescription(validClubDescription)).toBe(true);
+    expect(validations.validateClubDescription(invalidClubDescription)).toBe(false);
+    expect(validations.validateClubDescription(emptyClubDescription)).toBe(true);
+});
+
+test("properly validated the club title input", () => {
+    expect(validations.validateClubTitle(validClubTitle)).toBe(true);
+    expect(validations.validateClubTitle(invalidClubTitle)).toBe(false);
+    expect(validations.validateClubTitle(emptyClubTitle)).toBe(true);
+});                    
 
 // Education
 
@@ -87,10 +115,46 @@ test("properly validated the name input", () => {
 
 
 // Projects
+const validProjectName = "Portfolio Website";
+const invalidProjectName = "a".repeat(101);
+const emptyProjectName = "";
 
+const validProjectDescription = "kdfdlfjkdlkfjdfdklndlkvndklvndklfldjlkndvlknvdlkjfdnklvdnvkdljnf";
+const invalidProjectDescription = "a".repeat(501);
+const emptyProjectDescription = "";
+
+const validProjectLink = "https://example.com/project";
+const invalidProjectLink = "not-a-url";
+const emptyProjectLink = "";
+
+test("properly validated the project name input", () => {
+    expect(validations.validateProjectName(validProjectName)).toBe(true);
+    expect(validations.validateProjectName(invalidProjectName)).toBe(false);
+    expect(validations.validateProjectName(emptyProjectName)).toBe(true);
+});
+
+test("properly validated the project description input", () => {
+    expect(validations.validateProjectDescription(validProjectDescription)).toBe(true);
+    expect(validations.validateProjectDescription(invalidProjectDescription)).toBe(false);
+    expect(validations.validateProjectDescription(emptyProjectDescription)).toBe(true);
+});
+
+test("properly validated the project link input", () => {
+    expect(validations.validateProjectLink(validProjectLink)).toBe(true);
+    expect(validations.validateProjectLink(invalidProjectLink)).toBe(false);
+    expect(validations.validateProjectLink(emptyProjectLink)).toBe(true);
+});
 
 // Resume
+const validResume = "https://example.com/resume.pdf";
+const invalidResume = "not-a-url";
+const emptyResume = "";
 
+test("properly validated the resume input", () => {
+    expect(validations.validateResume(validResume)).toBe(true);
+    expect(validations.validateResume(invalidResume)).toBe(false);
+    expect(validations.validateResume(emptyResume)).toBe(true);
+});
 
 // School Year
 const schoolYear = "Freshman"
@@ -109,8 +173,15 @@ test("Properly validated the schoolYear input", () =>{
     expect(validations.validateSchoolYear(numSchoolYear)).toBe(false)
 })
 
-
 // Skills
+const validSkill = "lkdnfdlknfdlknvdlknvd";
+const invalidSkill = "a".repeat(51);
+const emptySkill = "";
 
+test("properly validated the skill input", () => {
+    expect(validations.validateSkill(validSkill)).toBe(true);
+    expect(validations.validateSkill(invalidSkill)).toBe(false);
+    expect(validations.validateSkill(emptySkill)).toBe(true);
+});
 
 // Work experience

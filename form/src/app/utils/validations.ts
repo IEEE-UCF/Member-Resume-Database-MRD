@@ -156,6 +156,12 @@ export const validateSchoolYear = (schoolYear: string) => {
 
 
 // Skills
+export const validateSkill = (skill: string) => {
+    const trimmed = skill.trim();
 
+    if (trimmed.length === 0) return true;
+
+    return trimmed.length <= 50;
+};
 
 // Work experience
