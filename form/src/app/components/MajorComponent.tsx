@@ -1,7 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
-import { ucfMajors } from "../data/majors";
-import type { Form } from "../interfaces";
+import { Dispatch, SetStateAction, useState } from "react";
+import { type Form } from "../interfaces";
+
 import { setMajor } from "../utils/onChanges";
+import { validateMajor } from "../utils/validations";
+import { printArray } from "../utils/printArray";
+import { ucfMajors } from "../data/majors";
+
 
 type MajorComponentProps = {
     major: string;
@@ -12,9 +16,24 @@ const MajorComponent = ({
     major, 
     setFormData 
 }: MajorComponentProps) => {
+    const[errors, setErrors] = useState<string[]>([])
+
     return (
         <>
             <h3>Major</h3>
+
+            {
+                errors.length > 0 && 
+                (<>
+                    <p>MAJOR IS NOT VALID BECAUSE:</p>
+
+                    {
+                        printArray(errors, "major")
+                    }
+               </>)
+            }
+
+
             <select
                 name="major"
                 value={major}
@@ -27,6 +46,14 @@ const MajorComponent = ({
                     </option>
                 ))}
             </select>
+            <button
+                onClick={(e) => {
+                    e.preventDefault()
+                    setErrors(validateMajor(major))
+                }}
+            >
+                Submit
+            </button>
         </>
     );
 };

@@ -69,15 +69,33 @@ export const validateLinks = (link : string) => {
 
 
 // Major
-export const validateMajor = (major: string) => {
+export const validateMajor = (major: string): string[] => {
+    const errors: string[] = []
+
     let isSelectd = (major !== ("Select Major"))
     let validMajor = ucfMajors.includes(major)
     let strTooSmall = major.length <= 0
     let strTooLarge = major.length > 200
     let isSpecialCharacter = /[@#$%^&*_+=\[\]{};'"\\|<>\/?]/.test(major)
-
-    return isSelectd && validMajor && !strTooSmall && !strTooLarge && !isSpecialCharacter
-}
+    
+    if(!isSelectd){
+        errors.push("Major was not selected")
+    }
+    if(!validMajor){
+        errors.push("Valid major from list was not input")
+    }
+    if(strTooSmall){
+        errors.push("Selected Major length too small")
+    }
+    if(strTooLarge){
+        errors.push("Selected Major length too large")
+    }
+    if(isSpecialCharacter){
+        errors.push("Selected Major contains an invalid special character")
+    }
+   
+    return errors
+}   
 
 
 // Name 

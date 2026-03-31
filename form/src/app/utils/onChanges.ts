@@ -76,11 +76,9 @@ export const setMajor = (
     newValue: string,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    if(validations.validateMajor(newValue)){
         setFormData(
             (prev) => ({ ...prev, major: newValue })
         )
-    }
 }
 
 
