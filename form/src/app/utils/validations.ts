@@ -81,14 +81,29 @@ export const validateMajor = (major: string) => {
 
 
 // Name 
-export const validateName = (name: string) => {
+export const validateName = (name: string): string[] => {
+    const errors: string[] = []
+    
     let isSelected = name.length > 0
     let tooLarge = name.length > 30
     let hasNumber = /\d/.test(name)
     //individual banned characters, can be changed later on
     let isSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(name)
 
-    return isSelected && !tooLarge  && !hasNumber && !isSpecialCharacter
+    if(!isSelected){
+        errors.push("Name was not input")
+    }
+    if(tooLarge){
+        errors.push("Name input too long")
+    }
+    if(hasNumber){
+        errors.push("Name input contains a number")
+    }
+    if(isSpecialCharacter){
+        errors.push("Name contains invalid special character")
+    }
+
+    return errors
 }
 
 
@@ -120,19 +135,24 @@ export const validateProjectLink = (link: string) => {
 };
 
 // Resume
-export const validateResume = (resume: string) => {
-  const trimmed = resume.trim();
+export const validateResume = (resume: string): string[] => {
+    const errors: string[] = []
+    
+    // basic url check
+    try{
+        const trimmed = resume.trim();
+        console.log("Trimmed input:", trimmed);
+        const url = new URL(trimmed);
+        console.log("Protocol:", url.protocol);
+        if(url.protocol !== "http:" && url.protocol !== "https:"){
+            errors.push("Resume input contained invalid addressing protocol")
+        }
+    } 
+    catch(e){
+        errors.push("Resume input is not a valid URL")
+    }
 
-  // allow clearing the field
-  if (trimmed.length === 0) return true;
-
-  // basic url check
-  try {
-    const url = new URL(trimmed);
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch {
-    return false;
-  }
+    return errors
 };
 
 // School Year
@@ -144,14 +164,32 @@ const schoolYearOptions = [
     "Graduate"
 ];
 
-export const validateSchoolYear = (schoolYear: string) => {
+export const validateSchoolYear = (schoolYear: string): string[] => {
+    const errors: string[] = []
+
     let isSelected = schoolYear.length > 0
     let validSchoolYear = schoolYearOptions.includes(schoolYear)
     let strTooLarge = schoolYear.length > 9
     let isSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(schoolYear)
     let hasNumber = /\d/.test(schoolYear)
 
-    return isSelected && validSchoolYear && !strTooLarge && !isSpecialCharacter && !hasNumber
+    if(!isSelected){
+        errors.push("School Year input was not selected.")
+    }
+    if(!validSchoolYear){
+        errors.push("Valid school year was not selected")
+    }
+    if(strTooLarge){
+        errors.push("School year input was too large")
+    }
+    if(isSpecialCharacter){
+        errors.push("School year included a special character")
+    }
+    if(hasNumber){
+        errors.push("School year included a number input")
+    }
+
+    return errors
 }
 
 

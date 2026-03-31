@@ -89,11 +89,9 @@ export const setName = (
     newValue: string, 
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    if(validations.validateName(newValue)){
         setFormData(
             (prev) => ({...prev, name: newValue})
         )
-    }
 }
 
 
@@ -134,18 +132,9 @@ export const setResume = (
     newValue: string,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    const trimmed = newValue.trim();
-    if (trimmed.length === 0) return true;
-    try {
-        const url = new URL(trimmed);
-        if (url.protocol === "http:" || url.protocol === "https:") {
-            setFormData((prev) => ({ ...prev, resume: newValue }));
-        } else {
-            return false;
-        }
-    } catch {
-        return false;
-    }
+        setFormData(
+            (prev) => ({ ...prev, resume: newValue })
+        )
 };
 
 // School Year
@@ -153,11 +142,9 @@ export const setSchoolYear = (
     newValue: string,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    if(validations.validateSchoolYear(newValue)){
         setFormData(
-            (prev) => ({...prev, schoolYear: newValue})
-        )
-    }
+        (prev) => ({...prev, schoolYear: newValue})
+    )
 }
 
 

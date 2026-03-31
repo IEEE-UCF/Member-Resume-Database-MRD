@@ -1,6 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { type Form } from "../interfaces"
+
 import { setSchoolYear } from "../utils/onChanges";
+import { validateSchoolYear } from "../utils/validations";
+import { printArray } from "../utils/printArray";
 
 interface SchoolYearComponentProps {
     schoolYear: string;
@@ -19,9 +22,23 @@ const SchoolYearComponent = ({
     schoolYear, 
     setFormData 
 }: SchoolYearComponentProps) => {
+    const [errors, setErrors] = useState<string[]>([])
+    
     return (
         <div>
             <h3>School Year</h3>
+
+            {
+                errors.length > 0 && 
+                (<>
+                    <p>SCHOOL YEAR IS NOT VALID BECAUSE:</p>
+                    
+                    {
+                        printArray(errors, "schoolYear")
+                    }
+                </>)
+            }
+
             {schoolYearOptions.map(option => (
                 <label key={option} style={{ marginRight: 16 }}>
                     <input
@@ -34,6 +51,14 @@ const SchoolYearComponent = ({
                     {option}
                 </label>
             ))}
+            <button
+                onClick={(e) => {
+                    e.preventDefault()
+                    setErrors(validateSchoolYear(schoolYear))
+                }}
+            >
+                Submit
+            </button>
         </div>
     );
 };
