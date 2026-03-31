@@ -60,11 +60,9 @@ export const setGraduationYear = (
     newValue: string,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    if(validations.validateGraduationYear(newValue)){
-        setFormData(
-            (prev) => ({...prev, graduationYear: Number(newValue)})
-        )
-    }
+    setFormData(
+        (prev) => ({...prev, graduationYear: Number(newValue)})
+    )
 }
 
 

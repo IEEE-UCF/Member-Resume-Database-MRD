@@ -45,7 +45,9 @@ export const validateClubTitle = (title: string) => {
 
 
 // Graduation 
-export const validateGraduationYear = (graduationYear: string) => {
+export const validateGraduationYear = (graduationYear: string): string[] => {
+    const errors: string[] = []
+    
     let isSelected = graduationYear.length > 0
     let tooSmall = Number(graduationYear) <= 1900
     let tooLarge = Number(graduationYear) >= 2200
@@ -53,7 +55,26 @@ export const validateGraduationYear = (graduationYear: string) => {
     let isSpecialCharacter = /[@#$%^&*_+=\[\]{};'"\\|<>\/?]/.test(graduationYear)
     let hasLetter = /\D/.test(graduationYear)
     
-    return isSelected && !tooSmall && !tooLarge && !strTooLarge  && !isSpecialCharacter && !hasLetter
+    if(!isSelected){
+        errors.push("Graduation Year was not input")
+    }
+     if(tooSmall){
+        errors.push("Graduation Year too old")
+    }
+     if(tooLarge){
+        errors.push("Graduation year is too far in the future")
+    }
+     if(strTooLarge){
+        errors.push("Graduation input too large")
+    }
+     if(isSpecialCharacter){
+        errors.push("Graduation input contains a special character")
+    }
+     if(hasLetter){
+        errors.push("Graduation input contains a letter")
+    }
+
+    return errors
 }
 
 // Links
