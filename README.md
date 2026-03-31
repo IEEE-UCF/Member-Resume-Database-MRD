@@ -1,5 +1,5 @@
 # Member Resume Database (MRD)
-The following document describes the structure of the code of version 1 of the Member Resume Database (MRD).
+The following document describes the structure of the code of version 1 of the Member Resume Database (MRD). Version 2 is currently being worked on and is expected to be finished around mid-April.
 
 ## Contents
 <ul>
