@@ -42,9 +42,10 @@ const GraduationYearComponent = ({
             <button
                 onClick={(e) =>{
                     e.preventDefault()
-                    setErrors(validateGraduationYear(graduationYear))
+                    setErrors(validateGraduationYear(String(graduationYear)))
                 }}
             >
+                Submit
             </button>
         </div>
     );

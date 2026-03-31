@@ -74,9 +74,9 @@ export const setMajor = (
     newValue: string,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-        setFormData(
-            (prev) => ({ ...prev, major: newValue })
-        )
+    setFormData(
+        (prev) => ({ ...prev, major: newValue })
+    )
 }
 
 
