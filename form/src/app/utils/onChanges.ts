@@ -162,6 +162,41 @@ export const setSchoolYear = (
 
 
 // Skills
+export const setSkill = (
+    index: number,
+    value: string,
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    if (!validations.validateSkill(value)) return;
 
+    setFormData((prev) => {
+        const result = [...prev.skills];
+        result[index] = value;
+
+        return {
+            ...prev,
+            skills: result
+        };
+    });
+};
+
+export const addSkill = (
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => ({
+        ...prev,
+        skills: [...prev.skills, ""]
+    }));
+};
+
+export const removeSkill = (
+    index: number,
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => ({
+        ...prev,
+        skills: prev.skills.filter((_, i) => i !== index)
+    }));
+};
 
 // Work experience
