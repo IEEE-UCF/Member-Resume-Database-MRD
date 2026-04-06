@@ -1,3 +1,5 @@
+import { setPicture } from "../utils/onChanges";
+
 import { Dispatch, SetStateAction } from "react";
 
 import { type Form } from "../interfaces"
@@ -16,10 +18,7 @@ const PictureComponent = ({ setFormData }: PictureComponentProps) => {
                 onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                        setFormData((prev) => ({
-                            ...prev,
-                            picture: file,
-                        }));
+                        setPicture(file, setFormData);
                     }
                 }}
             />
