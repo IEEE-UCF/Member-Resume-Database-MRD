@@ -252,9 +252,14 @@ export const validateName = (name: string): string[] => {
 
 // Picture
 
-export const validatePicture = (picture: File) => {
+export const validatePicture = (picture: File): string[] => {
+    const errors: string[] = []
     let tooLarge = picture.size > 5 * 1024 * 1024; // 5MB
-    return !tooLarge;
+    if(tooLarge){
+        errors.push ("Picture too large")
+    }
+
+    return errors
 }
 
 
@@ -342,12 +347,23 @@ export const validateSchoolYear = (schoolYear: string): string[] => {
 
 
 // Skills
-export const validateSkill = (skill: string) => {
-    const trimmed = skill.trim();
+export const validateSkill = (skills: string[]): string[] => {
+    const errors: string[] = []
 
-    if (trimmed.length === 0) return true;
+    let tooLong = false
+    skills.forEach(skill => {
+        const trimmed = skill.trim();
 
-    return trimmed.length <= 50;
+        if(trimmed.length >= 50){
+            tooLong = true
+        }
+    })
+
+    if(tooLong){
+        errors.push("A skills length is too long")
+    }
+    
+    return errors
 };
 
 // Work experience

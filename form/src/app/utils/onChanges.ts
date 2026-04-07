@@ -205,11 +205,9 @@ export const setPicture = (
     newValue: File,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    if(validations.validatePicture(newValue)) {
         setFormData(
             (prev) => ({ ...prev, picture: newValue })
         )
-    }
 }
 
 // Projects
@@ -268,8 +266,6 @@ export const setSkill = (
     value: string,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    if (!validations.validateSkill(value)) return;
-
     setFormData((prev) => {
         const result = [...prev.skills];
         result[index] = value;
