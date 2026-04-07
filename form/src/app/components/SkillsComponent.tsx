@@ -76,7 +76,7 @@ const SkillsComponent = ({
                     setErrors(validateSkill(skills))
                 }}
             >
-                submit
+                Submit
             </button>
 
 
