@@ -1,6 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
-
+import { Dispatch, SetStateAction, useState } from "react";
 import { type Form } from "../interfaces"
+
+import { setSkill } from "../utils/onChanges";
+import { validateSkill } from "../utils/validations";
+import { printArray } from "../utils/printArray";
 
 interface SkillsComponentProps {
     skills: string[];
@@ -11,9 +14,22 @@ const SkillsComponent = ({
     skills, 
     setFormData 
 }: SkillsComponentProps) => {
+    const[errors, setErrors] = useState<string[]>([])
+
     return (
         <>
             <h3>Skills</h3>
+
+             {
+                errors.length > 0 &&
+                (<>
+                    <p>SKILLS ARE INVALID BECAUSE:</p>
+                    {
+                        printArray(errors, "skills")
+                    }
+                </>)
+            }
+            
             {skills.map((skill, index) => {
                 return (
                     <div key={`skills[${index}]`}>
@@ -54,6 +70,16 @@ const SkillsComponent = ({
             >
                 Add Skill
             </button>
+            <button
+                onClick={(e)=> {
+                    e.preventDefault()
+                    setErrors(validateSkill(skills))
+                }}
+            >
+                Submit
+            </button>
+
+
         </>
     );
 };
