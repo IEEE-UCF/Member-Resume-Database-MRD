@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 
 import * as validations from "./validations"
 
-import { Form } from "../interfaces";
+import { Form, createEmptyExperience } from "../interfaces";
 
 // Bio          
 export const setBio = (
@@ -301,3 +301,41 @@ export const removeSkill = (
 };
 
 // Work experience
+export const setWorkExperienceDetails = (
+  index: number,
+  field: "name" | "title" | "description",
+  value: string,
+  setFormData: Dispatch<SetStateAction<Form>>
+) => {
+  setFormData((prev) => {
+    const result = [...prev.workExperiences];
+    result[index] = {
+      ...result[index],
+      [field]: value,
+    };
+
+    return {
+      ...prev,
+      workExperiences: result,
+    };
+  });
+};
+
+export const addWorkExperience = (
+  setFormData: Dispatch<SetStateAction<Form>>
+) => {
+  setFormData((prev) => ({
+    ...prev,
+    workExperiences: [...prev.workExperiences, createEmptyExperience()],
+  }));
+};
+
+export const removeWorkExperience = (
+  index: number,
+  setFormData: Dispatch<SetStateAction<Form>>
+) => {
+  setFormData((prev) => ({
+    ...prev,
+    workExperiences: prev.workExperiences.filter((_, i) => i !== index),
+  }));
+};

@@ -39,6 +39,19 @@ export const validateClubTitle = (title: string) => {
     const trimmed = title.trim();
     if (trimmed.length === 0) return true;
     return trimmed.length > 0 && trimmed.length <= 50; // This length can be adjusted to meet the requirements
+};
+export const getClubErrors = (
+  name: string,
+  description: string,
+  title: string
+): { name: string; description: string; title: string } => {
+  return {
+    name: validateClubName(name) ? "" : "Club name is invalid.",
+    description: validateClubDescription(description)
+      ? ""
+      : "Club description is invalid.",
+    title: validateClubTitle(title) ? "" : "Club title is invalid.",
+  };
 };  
 
 // Education
@@ -192,6 +205,10 @@ export const validateLinks = (link : string) => {
     return !isEmpty && !strTooSmall && !strTooLarge && !whiteSpace && validProtocol 
 }
 
+export const getLinkError = (link: string): string => {
+  return validateLinks(link) ? "" : "Link is invalid.";
+};
+
 
 // Major
 export const validateMajor = (major: string): string[] => {
@@ -282,6 +299,20 @@ export const validateProjectLink = (link: string) => {
     }
 };
 
+export const getProjectErrors = (
+  name: string,
+  description: string,
+  link: string
+): { name: string; description: string; link: string } => {
+  return {
+    name: validateProjectName(name) ? "" : "Project name is invalid.",
+    description: validateProjectDescription(description)
+      ? ""
+      : "Project description is invalid.",
+    link: validateProjectLink(link) ? "" : "Project link is invalid.",
+  };
+};
+
 // Resume
 export const validateResume = (resume: string): string[] => {
     const errors: string[] = []
@@ -351,3 +382,36 @@ export const validateSkill = (skill: string) => {
 };
 
 // Work experience
+export const validateWorkExperienceName = (name: string): boolean => {
+  const trimmed = name.trim();
+  if (trimmed.length === 0) return true;
+  return trimmed.length <= 100;
+};
+
+export const validateWorkExperienceTitle = (title: string): boolean => {
+  const trimmed = title.trim();
+  if (trimmed.length === 0) return true;
+  return trimmed.length <= 100;
+};
+
+export const validateWorkExperienceDescription = (
+  description: string
+): boolean => {
+  const trimmed = description.trim();
+  if (trimmed.length === 0) return true;
+  return trimmed.length <= 500;
+};
+
+export const getWorkExperienceErrors = (
+  name: string,
+  title: string,
+  description: string
+): { name: string; title: string; description: string } => {
+  return {
+    name: validateWorkExperienceName(name) ? "" : "Company name is invalid.",
+    title: validateWorkExperienceTitle(title) ? "" : "Job title is invalid.",
+    description: validateWorkExperienceDescription(description)
+      ? ""
+      : "Work description is invalid.",
+  };
+};
