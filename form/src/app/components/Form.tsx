@@ -56,6 +56,15 @@ const Form = () => {
         handleConfirmAll();
     };
 
+    const hasErrors = () => {
+        return Object.values(formErrors).some(errorGroup => {
+            if ("sectionErrors" in errorGroup) {
+                return errorGroup.sectionErrors.length > 0 || errorGroup.itemErrors.some(item => item.length > 0);
+            }
+            return errorGroup.itemErrors.length > 0;
+        });
+    };
+
     return (
         <>
             <form onSubmit={handleSubmit} className={`${formStyles.form}`}>
@@ -171,7 +180,10 @@ const Form = () => {
                     />
                 </div>
 
-                <button type="submit">Confirm All Information</button>
+                <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "2rem" }}>
+                    <button type="submit">Confirm All Information</button>
+                    {hasErrors() && <span style={{ color: "red", fontWeight: "bold" }}>There are errors in the form</span>}
+                </div>
             </form>
         </>
     );
