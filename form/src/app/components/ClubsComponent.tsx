@@ -1,22 +1,23 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { type Form, type Experience } from "../interfaces"
 
 import ClubComponent from "./ClubComponent";
 import { setClubDetails, addClub, removeClub } from "../utils/onChanges";
-import { validateClubs } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 interface ClubsComponentProps {
     clubs: Experience[];
     setFormData: Dispatch<SetStateAction<Form>>;
+    sectionErrors: string[];
+    itemErrors: string[][];
 }
 
 const ClubsComponent = ({ 
     clubs, 
-    setFormData 
+    setFormData,
+    sectionErrors,
+    itemErrors 
 }: ClubsComponentProps) => {
-    const [sectionErrors, setSectionErrors] = useState<string[]>([])
-    const [itemErrors, setItemErrors] = useState<string[][]>(clubs.map(() => []))
 
     return (
         <>
@@ -40,7 +41,6 @@ const ClubsComponent = ({
                         onUpdateField={(field, val) => setClubDetails(index, field, val, setFormData)}
                         onRemove={() => {
                             removeClub(index, setFormData);
-                            setItemErrors(prev => prev.filter((_, i) => i !== index));
                         }}
                     />
                 );
@@ -50,21 +50,9 @@ const ClubsComponent = ({
                 onClick={(e) => {
                     e.preventDefault();
                     addClub(setFormData);
-                    setItemErrors(prev => [...prev, []]);
                 }}
             >
                 Add Club
-            </button>
-
-            <button
-                onClick={(e) => {
-                    e.preventDefault();
-                    const { sectionErrors: sErrors, itemErrors: iErrors } = validateClubs(clubs);
-                    setSectionErrors(sErrors);
-                    setItemErrors(iErrors);
-                }}
-            >
-                Confirm All Clubs
             </button>
         </>
     );

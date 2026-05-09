@@ -1,20 +1,20 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { type Form } from "../interfaces";
 
 import { setName } from "../utils/onChanges";
-import { validateName } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 type NameComponentProps = {
     name: string;
     setFormData: Dispatch<SetStateAction<Form>>;
+    itemErrors: string[];
 };
 
 const NameComponent = ({ 
     name, 
-    setFormData 
+    setFormData,
+    itemErrors 
 }: NameComponentProps) => {
-    const [itemErrors, setItemErrors] = useState<string[]>([])
 
     return (
         <>
@@ -37,15 +37,6 @@ const NameComponent = ({
                 value={name}
                 onChange={(e) => setName(e.target.value, setFormData)}
             />
-            <button
-                onClick={(e) => {
-                    e.preventDefault()
-                    const { itemErrors: iErrors } = validateName(name)
-                    setItemErrors(iErrors)
-                }}
-            >
-                Confirm Name
-            </button>
         </>
     );
 };

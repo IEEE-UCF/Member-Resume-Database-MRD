@@ -1,22 +1,23 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { type Form, type Project } from "../interfaces"
 
 import ProjectComponent from "./ProjectComponent";
 import { setProjectDetails, addProject, removeProject } from "../utils/onChanges";
-import { validateProjects } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 interface ProjectsComponentProps {
     projects: Project[];
     setFormData: Dispatch<SetStateAction<Form>>;
+    sectionErrors: string[];
+    itemErrors: string[][];
 }
 
 const ProjectsComponent = ({ 
     projects, 
-    setFormData 
+    setFormData,
+    sectionErrors,
+    itemErrors 
 }: ProjectsComponentProps) => {
-    const [sectionErrors, setSectionErrors] = useState<string[]>([])
-    const [itemErrors, setItemErrors] = useState<string[][]>(projects.map(() => []))
 
     return (
         <>
@@ -40,7 +41,6 @@ const ProjectsComponent = ({
                         onUpdateField={(field, val) => setProjectDetails(index, field as any, val, setFormData)}
                         onRemove={() => {
                             removeProject(index, setFormData);
-                            setItemErrors(prev => prev.filter((_, i) => i !== index));
                         }}
                     />
                 );
@@ -50,21 +50,9 @@ const ProjectsComponent = ({
                 onClick={(e) => {
                     e.preventDefault();
                     addProject(setFormData);
-                    setItemErrors(prev => [...prev, []]);
                 }}
             >
                 Add Project
-            </button>
-
-            <button
-                onClick={(e) => {
-                    e.preventDefault();
-                    const { sectionErrors: sErrors, itemErrors: iErrors } = validateProjects(projects);
-                    setSectionErrors(sErrors);
-                    setItemErrors(iErrors);
-                }}
-            >
-                Confirm All Projects
             </button>
         </>
     );

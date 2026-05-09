@@ -103,35 +103,35 @@ export const createEmptyForm = (): Form => {
 };
 
 export interface FormErrors {
-    name: string[];
-    bio: string[];
-    resume: string[];
-    major: string[];
-    schoolYear: string[];
-    graduationYear: string[];
-    links: string[];
-    educations: string[];
-    clubs: string[];
-    workExperiences: string[];
-    picture: string[];
-    projects: string[];
-    skills: string[];
+    name: { itemErrors: string[] };
+    bio: { itemErrors: string[] };
+    resume: { itemErrors: string[] };
+    major: { itemErrors: string[] };
+    schoolYear: { itemErrors: string[] };
+    graduationYear: { itemErrors: string[] };
+    links: { sectionErrors: string[], itemErrors: string[][] };
+    educations: { sectionErrors: string[], itemErrors: string[][] };
+    clubs: { sectionErrors: string[], itemErrors: string[][] };
+    workExperiences: { sectionErrors: string[], itemErrors: string[][] };
+    picture: { itemErrors: string[] };
+    projects: { sectionErrors: string[], itemErrors: string[][] };
+    skills: { sectionErrors: string[], itemErrors: string[][] };
 }
 
 export const createEmptyFormErrors = (): FormErrors => {
     return {
-        name: [],
-        bio: [],
-        resume: [],
-        major: [],
-        schoolYear: [],
-        graduationYear: [],
-        links: [],
-        educations: [],
-        clubs: [],
-        workExperiences: [],
-        picture: [],
-        projects: [],
-        skills: [],
+        name: { itemErrors: [] },
+        bio: { itemErrors: [] },
+        resume: { itemErrors: [] },
+        major: { itemErrors: [] },
+        schoolYear: { itemErrors: [] },
+        graduationYear: { itemErrors: [] },
+        links: { sectionErrors: [], itemErrors: [] },
+        educations: { sectionErrors: [], itemErrors: [] },
+        clubs: { sectionErrors: [], itemErrors: [] },
+        workExperiences: { sectionErrors: [], itemErrors: [] },
+        picture: { itemErrors: [] },
+        projects: { sectionErrors: [], itemErrors: [] },
+        skills: { sectionErrors: [], itemErrors: [] },
     };
 };

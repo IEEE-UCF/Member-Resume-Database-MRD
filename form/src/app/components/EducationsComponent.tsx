@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { type Form, type Education } from "../interfaces"
 
 import EducationComponent from "./EducationComponent";
@@ -13,20 +13,21 @@ import {
     addEducation,
     removeEducation
 } from "../utils/onChanges";
-import { validateEducations } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 interface EducationsComponentProps {
     educations: Education[];
     setFormData: Dispatch<SetStateAction<Form>>;
+    sectionErrors: string[];
+    itemErrors: string[][];
 }
 
 const EducationsComponent = ({ 
     educations, 
-    setFormData 
+    setFormData,
+    sectionErrors,
+    itemErrors 
 }: EducationsComponentProps) => {
-    const [sectionErrors, setSectionErrors] = useState<string[]>([])
-    const [itemErrors, setItemErrors] = useState<string[][]>(educations.map(() => []))
 
     const handleUpdateField = (index: number, field: string, value: string) => {
         switch (field) {
@@ -66,7 +67,6 @@ const EducationsComponent = ({
                         onUpdateGPA={(field, val) => handleUpdateGPA(index, field, val)}
                         onRemove={() => {
                             removeEducation(index, setFormData);
-                            setItemErrors(prev => prev.filter((_, i) => i !== index));
                         }}
                     />
                 );
@@ -76,21 +76,9 @@ const EducationsComponent = ({
                 onClick={(e) => {
                     e.preventDefault();
                     addEducation(setFormData);
-                    setItemErrors(prev => [...prev, []]);
                 }}
             >
                 Add Education
-            </button>
-
-            <button
-                onClick={(e) => {
-                    e.preventDefault();
-                    const { sectionErrors: sErrors, itemErrors: iErrors } = validateEducations(educations);
-                    setSectionErrors(sErrors);
-                    setItemErrors(iErrors);
-                }}
-            >
-                Confirm All Educations
             </button>
         </>
     );

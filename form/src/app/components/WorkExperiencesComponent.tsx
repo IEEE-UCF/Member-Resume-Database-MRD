@@ -3,20 +3,21 @@ import { type Form, type Experience } from "../interfaces"
 
 import WorkExperienceComponent from "./WorkExperienceComponent";
 import { setWorkExperienceDetails, addWorkExperience, removeWorkExperience } from "../utils/onChanges";
-import { validateWorkExperiences } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 interface WorkExperiencesComponentProps {
     workExperiences: Experience[];
     setFormData: Dispatch<SetStateAction<Form>>;
+    sectionErrors: string[];
+    itemErrors: string[][];
 }
 
 const WorkExperiencesComponent = ({ 
     workExperiences, 
-    setFormData 
+    setFormData,
+    sectionErrors,
+    itemErrors 
 }: WorkExperiencesComponentProps) => {
-    const [sectionErrors, setSectionErrors] = useState<string[]>([])
-    const [itemErrors, setItemErrors] = useState<string[][]>(workExperiences.map(() => []))
 
     return (
         <>
@@ -40,7 +41,6 @@ const WorkExperiencesComponent = ({
                         onUpdateField={(field, val) => setWorkExperienceDetails(index, field as any, val, setFormData)}
                         onRemove={() => {
                             removeWorkExperience(index, setFormData);
-                            setItemErrors(prev => prev.filter((_, i) => i !== index));
                         }}
                     />
                 );
@@ -50,21 +50,9 @@ const WorkExperiencesComponent = ({
                 onClick={(e) => {
                     e.preventDefault();
                     addWorkExperience(setFormData);
-                    setItemErrors(prev => [...prev, []]);
                 }}
             >
                 Add Work Experience
-            </button>
-
-            <button
-                onClick={(e) => {
-                    e.preventDefault();
-                    const { sectionErrors: sErrors, itemErrors: iErrors } = validateWorkExperiences(workExperiences);
-                    setSectionErrors(sErrors);
-                    setItemErrors(iErrors);
-                }}
-            >
-                Confirm All Work Experiences
             </button>
         </>
     );

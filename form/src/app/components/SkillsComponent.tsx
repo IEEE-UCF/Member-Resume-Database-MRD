@@ -1,21 +1,22 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { type Form } from "../interfaces"
 
 import SkillComponent from "./SkillComponent";
 import { setSkill, addSkill, removeSkill } from "../utils/onChanges";
-import { validateSkills, validateSkill } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 interface SkillsComponentProps {
     skills: string[];
     setFormData: Dispatch<SetStateAction<Form>>;
+    sectionErrors: string[];
+    itemErrors: string[][];
 }
 const SkillsComponent = ({ 
     skills, 
-    setFormData 
+    setFormData,
+    sectionErrors,
+    itemErrors 
 }: SkillsComponentProps) => {
-    const [sectionErrors, setSectionErrors] = useState<string[]>([])
-    const [itemErrors, setItemErrors] = useState<string[][]>(skills.map(() => []))
 
     return (
         <>
@@ -42,7 +43,6 @@ const SkillsComponent = ({
                         onChange={(val) => setSkill(index, val, setFormData)}
                         onRemove={() => {
                             removeSkill(index, setFormData);
-                            setItemErrors(prev => prev.filter((_, i) => i !== index));
                         }}
                     />
                 );
@@ -52,21 +52,9 @@ const SkillsComponent = ({
                 onClick={(e) => {
                     e.preventDefault();
                     addSkill(setFormData);
-                    setItemErrors(prev => [...prev, []]);
                 }}
             >
                 Add Skill
-            </button>
-
-            <button
-                onClick={(e) => {
-                    e.preventDefault();
-                    const { sectionErrors: sErrors, itemErrors: iErrors } = validateSkills(skills);
-                    setSectionErrors(sErrors);
-                    setItemErrors(iErrors);
-                }}
-            >
-                Confirm All Skills
             </button>
         </>
     );

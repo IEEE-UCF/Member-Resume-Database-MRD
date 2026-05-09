@@ -1,20 +1,20 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { type Form } from "../interfaces"
 
 import { setResume } from "../utils/onChanges";
-import { validateResume } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 interface ResumeComponentProps {
     resume: string;
     setFormData: Dispatch<SetStateAction<Form>>;
+    itemErrors: string[];
 }
 
 const ResumeComponent = ({ 
     resume, 
-    setFormData 
+    setFormData,
+    itemErrors 
 }: ResumeComponentProps) => {
-    const [itemErrors, setItemErrors] = useState<string[]>([])
 
     return (
         <>
@@ -38,15 +38,6 @@ const ResumeComponent = ({
                 value={resume}
                 onChange={(e) => setResume(e.target.value, setFormData)}
             />
-            <button
-                onClick={(e) => {
-                    e.preventDefault()
-                    const { itemErrors: iErrors } = validateResume(resume)
-                    setItemErrors(iErrors)
-                }}
-            >
-                Confirm Resume
-            </button>
         </>
     );
 };

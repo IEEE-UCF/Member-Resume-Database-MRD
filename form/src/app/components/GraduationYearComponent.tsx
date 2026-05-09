@@ -1,13 +1,13 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Form } from "../interfaces";
 
 import { setGraduationYear } from "../utils/onChanges";
-import { validateGraduationYear } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 interface GraduationYearComponentProps {
     graduationYear: string;
     setFormData: Dispatch<SetStateAction<Form>>;
+    itemErrors: string[];
 }
 
 const months = [
@@ -17,9 +17,9 @@ const months = [
 
 const GraduationYearComponent = ({ 
     graduationYear, 
-    setFormData 
+    setFormData,
+    itemErrors 
 }: GraduationYearComponentProps) => {
-    const [itemErrors, setItemErrors] = useState<string[]>([])
     
     // Improved parsing to handle partial strings correctly
     let currentMonth = "";
@@ -82,16 +82,6 @@ const GraduationYearComponent = ({
                 <option value="">Select Year</option>
                 {years.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
-
-            <button
-                onClick={(e) => {
-                    e.preventDefault()
-                    const { itemErrors: iErrors } = validateGraduationYear(graduationYear)
-                    setItemErrors(iErrors)
-                }}
-            >
-                Confirm Graduation Year
-            </button>
         </div>
     );
 };

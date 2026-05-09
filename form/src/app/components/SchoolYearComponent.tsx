@@ -1,13 +1,13 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { type Form } from "../interfaces"
 
 import { setSchoolYear } from "../utils/onChanges";
-import { validateSchoolYear } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 interface SchoolYearComponentProps {
     schoolYear: string;
     setFormData: Dispatch<SetStateAction<Form>>;
+    itemErrors: string[];
 }
 
 const schoolYearOptions = [
@@ -20,9 +20,9 @@ const schoolYearOptions = [
 
 const SchoolYearComponent = ({ 
     schoolYear, 
-    setFormData 
+    setFormData,
+    itemErrors 
 }: SchoolYearComponentProps) => {
-    const [itemErrors, setItemErrors] = useState<string[]>([])
     
     return (
         <div>
@@ -51,15 +51,6 @@ const SchoolYearComponent = ({
                     {option}
                 </label>
             ))}
-            <button
-                onClick={(e) => {
-                    e.preventDefault()
-                    const { itemErrors: iErrors } = validateSchoolYear(schoolYear)
-                    setItemErrors(iErrors)
-                }}
-            >
-                Confirm School Year
-            </button>
         </div>
     );
 };

@@ -1,20 +1,20 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import type { Form } from "../interfaces";
 
 import { setBio } from "../utils/onChanges"
-import { validateBio } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 type BioComponentProps = {
     bio: string;
     setFormData: Dispatch<SetStateAction<Form>>;
+    itemErrors: string[];
 };
 
 const BioComponent = ({ 
     bio,
     setFormData, 
+    itemErrors,
 }: BioComponentProps) => {
-    const [itemErrors, setItemErrors] = useState<string[]>([])
 
     return (
         <>
@@ -35,16 +35,6 @@ const BioComponent = ({
                 onChange={(e) => setBio(e.target.value, setFormData)}
                 rows={5}
             />
-
-            <button
-                onClick={(e) => {
-                    e.preventDefault()
-                    const { itemErrors: iErrors } = validateBio(bio)
-                    setItemErrors(iErrors)
-                }}
-            >
-                Confirm Bio
-            </button>
         </>
     );
 };

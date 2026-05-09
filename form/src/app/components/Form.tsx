@@ -15,27 +15,45 @@ import MajorComponent from "./MajorComponent";
 import EducationsComponent from "./EducationsComponent";
 import ClubsComponent from "./ClubsComponent"
 
-import { type Form, createEmptyForm, createEmptyExperience, createEmptyEducation } from "../interfaces"
+import { 
+    type Form, 
+    createEmptyForm, 
+    type FormErrors, 
+    createEmptyFormErrors 
+} from "../interfaces"
+
+import * as validations from "../utils/validations"
 
 import formStyles from "../styles/form.module.css"
 
 const Form = () => {
     const [formData, setFormData] = useState<Form>(createEmptyForm());
+    const [formErrors, setFormErrors] = useState<FormErrors>(createEmptyFormErrors());
+
+    const handleConfirmAll = () => {
+        const errors: FormErrors = {
+            name: validations.validateName(formData.name),
+            bio: validations.validateBio(formData.bio),
+            resume: validations.validateResume(formData.resume),
+            major: validations.validateMajor(formData.major),
+            schoolYear: validations.validateSchoolYear(formData.schoolYear),
+            graduationYear: validations.validateGraduationYear(formData.graduationYear),
+            links: validations.validateLinks(formData.links),
+            educations: validations.validateEducations(formData.educations),
+            clubs: validations.validateClubs(formData.clubs),
+            workExperiences: validations.validateWorkExperiences(formData.workExperiences),
+            picture: formData.picture 
+                ? validations.validatePicture(formData.picture) 
+                : { itemErrors: [] }, // Picture is optional
+            projects: validations.validateProjects(formData.projects),
+            skills: validations.validateSkills(formData.skills),
+        };
+        setFormErrors(errors);
+    };
 
     const handleSubmit = async (event: React.FormEvent) => {
-        // event.preventDefault();
-        // try {
-        //     const response = await fetch("http://localhost:3001", {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify(formData),
-        //     });
-        //     const data = await response.json();
-        //     console.log(data);
-        //     console.log(formData)
-        // } catch (error) {
-        //     console.error("Error: ", error);
-        // }
+        event.preventDefault();
+        handleConfirmAll();
     };
 
     return (
@@ -46,6 +64,7 @@ const Form = () => {
                     <NameComponent 
                         name={formData.name} 
                         setFormData={setFormData} 
+                        itemErrors={formErrors.name.itemErrors}
                     />
                 </div>
 
@@ -53,6 +72,7 @@ const Form = () => {
                     <BioComponent 
                         bio={formData.bio} 
                         setFormData={setFormData} 
+                        itemErrors={formErrors.bio.itemErrors}
                     />
                 </div>
 
@@ -61,6 +81,7 @@ const Form = () => {
                     <ResumeComponent
                         resume={formData.resume}
                         setFormData={setFormData}
+                        itemErrors={formErrors.resume.itemErrors}
                     />
                 </div>
 
@@ -68,6 +89,7 @@ const Form = () => {
                     <MajorComponent 
                         major={formData.major} 
                         setFormData={setFormData} 
+                        itemErrors={formErrors.major.itemErrors}
                     />
                 </div>
 
@@ -75,6 +97,8 @@ const Form = () => {
                     <LinksComponent
                         links={formData.links}
                         setFormData={setFormData}
+                        sectionErrors={formErrors.links.sectionErrors}
+                        itemErrors={formErrors.links.itemErrors}
                     />
                 </div>
 
@@ -82,6 +106,7 @@ const Form = () => {
                     <GraduationYearComponent
                         graduationYear={formData.graduationYear}
                         setFormData={setFormData}
+                        itemErrors={formErrors.graduationYear.itemErrors}
                     />
                 </div>
 
@@ -90,6 +115,7 @@ const Form = () => {
                     <SchoolYearComponent
                         schoolYear = { formData.schoolYear }
                         setFormData = { setFormData }
+                        itemErrors={formErrors.schoolYear.itemErrors}
                     />
                 </div>
 
@@ -97,6 +123,8 @@ const Form = () => {
                     <EducationsComponent 
                         educations={formData.educations} 
                         setFormData={setFormData} 
+                        sectionErrors={formErrors.educations.sectionErrors}
+                        itemErrors={formErrors.educations.itemErrors}
                     />
                 </div>
 
@@ -104,6 +132,8 @@ const Form = () => {
                     <ClubsComponent
                         clubs = {formData.clubs}
                         setFormData = {setFormData}
+                        sectionErrors={formErrors.clubs.sectionErrors}
+                        itemErrors={formErrors.clubs.itemErrors}
                     />
                 </div>
 
@@ -111,17 +141,24 @@ const Form = () => {
                     <WorkExperiencesComponent
                         workExperiences = {formData.workExperiences}
                         setFormData = {setFormData}
+                        sectionErrors={formErrors.workExperiences.sectionErrors}
+                        itemErrors={formErrors.workExperiences.itemErrors}
                     />
                 </div>
 
                 <div className={`${formStyles.child} ${formStyles.picture}`}>
-                    <PictureComponent setFormData={setFormData} />
+                    <PictureComponent 
+                        setFormData={setFormData} 
+                        itemErrors={formErrors.picture.itemErrors}
+                    />
                 </div>
 
                 <div className={`${formStyles.child} ${formStyles.project}`}>
                     <ProjectsComponent
                         projects={formData.projects}
                         setFormData={setFormData}
+                        sectionErrors={formErrors.projects.sectionErrors}
+                        itemErrors={formErrors.projects.itemErrors}
                     />
                 </div>
 
@@ -129,6 +166,8 @@ const Form = () => {
                     <SkillsComponent
                         skills={formData.skills}
                         setFormData={setFormData}
+                        sectionErrors={formErrors.skills.sectionErrors}
+                        itemErrors={formErrors.skills.itemErrors}
                     />
                 </div>
 
