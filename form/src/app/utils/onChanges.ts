@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 
 import * as validations from "./validations"
 
-import { Form, createEmptyExperience, createEmptyEducation } from "../interfaces";
+import { Form, createEmptyExperience, createEmptyEducation, createEmptyProject } from "../interfaces";
 
 // Bio          
 export const setBio = (
