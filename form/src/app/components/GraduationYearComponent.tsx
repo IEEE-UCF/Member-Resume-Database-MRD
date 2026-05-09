@@ -6,46 +6,91 @@ import { validateGraduationYear } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
 interface GraduationYearComponentProps {
-    graduationYear: number;
+    graduationYear: string;
     setFormData: Dispatch<SetStateAction<Form>>;
 }
 
-const GraduationYearComponent = ({
-    graduationYear,
-    setFormData
+const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
+
+const GraduationYearComponent = ({ 
+    graduationYear, 
+    setFormData 
 }: GraduationYearComponentProps) => {
-    const[errors, setErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[]>([])
+    
+    // Improved parsing to handle partial strings correctly
+    let currentMonth = "";
+    let currentYear = "";
+    
+    if (graduationYear) {
+        const parts = graduationYear.split(" ");
+        if (parts.length === 2) {
+            [currentMonth, currentYear] = parts;
+        } else if (parts.length === 1) {
+            if (/^\d+$/.test(parts[0])) {
+                currentYear = parts[0];
+            } else {
+                currentMonth = parts[0];
+            }
+        }
+    }
+
+    const startYear = 2025;
+    const endYear = 2035;
+    const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
+
+    const handleMonthChange = (month: string) => {
+        const newDate = `${month} ${currentYear || ""}`.trim();
+        setGraduationYear(newDate, setFormData);
+    };
+
+    const handleYearChange = (year: string) => {
+        const newDate = `${currentMonth || ""} ${year}`.trim();
+        setGraduationYear(newDate, setFormData);
+    };
 
     return (
         <div>
             <h3>Graduation Year</h3>
 
             {
-                errors.length > 0 && 
+                itemErrors.length > 0 &&
                 (<>
-                    <p>GRADUATION YEAR IS INVALID BECAUSE</p>
+                    <p>GRADUATION YEAR IS NOT VALID BECAUSE:</p>
 
                     {
-                        printArray(errors, "graduationYear")
+                        printArray(itemErrors, "graduationYear")
                     }
                 </>)
             }
 
-            <input
-                type="number"
-                name="graduationYear"
-                min={2020}
-                max={2035}
-                value={graduationYear}
-                onChange={e => setGraduationYear(e.target.value, setFormData)}
-            />
+            <select 
+                value={currentMonth} 
+                onChange={(e) => handleMonthChange(e.target.value)}
+            >
+                <option value="">Select Month</option>
+                {months.map(m => <option key={m} value={m}>{m}</option>)}
+            </select>
+
+            <select 
+                value={currentYear} 
+                onChange={(e) => handleYearChange(e.target.value)}
+            >
+                <option value="">Select Year</option>
+                {years.map(y => <option key={y} value={y}>{y}</option>)}
+            </select>
+
             <button
-                onClick={(e) =>{
+                onClick={(e) => {
                     e.preventDefault()
-                    setErrors(validateGraduationYear(String(graduationYear)))
+                    const { itemErrors: iErrors } = validateGraduationYear(graduationYear)
+                    setItemErrors(iErrors)
                 }}
             >
-                Submit
+                Submit Graduation Year
             </button>
         </div>
     );

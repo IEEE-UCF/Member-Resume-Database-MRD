@@ -14,18 +14,18 @@ const BioComponent = ({
     bio,
     setFormData, 
 }: BioComponentProps) => {
-    const [errors, setErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[]>([])
 
     return (
         <>
             <h3>Bio</h3>
             
             {
-                errors.length > 0 &&
+                itemErrors.length > 0 &&
                 (<>
                     <p>BIO IS NOT VALID BECAUSE:</p>
 
-                    {printArray(errors, "Bio")}
+                    {printArray(itemErrors, "Bio")}
                 </>)
             }
 
@@ -39,10 +39,11 @@ const BioComponent = ({
             <button
                 onClick={(e) => {
                     e.preventDefault()
-                    setErrors(validateBio(bio))
+                    const { itemErrors: iErrors } = validateBio(bio)
+                    setItemErrors(iErrors)
                 }}
             >
-                Submit
+                Submit Bio
             </button>
         </>
     );

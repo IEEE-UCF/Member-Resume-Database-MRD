@@ -5,21 +5,21 @@ import { Form } from "../interfaces";
 import { ucfMajors } from "../data/majors";
 
 // Bio
-export const validateBio = (bio: string): string[] => {
-    const errors: string[] = []
+export const validateBio = (bio: string): { itemErrors: string[] } => {
+    const itemErrors: string[] = []
 
     let strTooSmall = bio.length <= 0
     let strTooLarge = bio.length > 8
 
     if(strTooSmall) {
-        errors.push("Bio input is too small.")
+        itemErrors.push("Bio input is too small.")
     }
 
     if(strTooLarge) {
-        errors.push("Bio input is too large.")
+        itemErrors.push("Bio input is too large.")
     }
 
-    return errors
+    return { itemErrors }
 }
 
 // Clubs
@@ -162,57 +162,98 @@ export const validateEducationDescription = (educationDescription: string) => {
     }    
 
 // Graduation 
-export const validateGraduationYear = (graduationYear: string): string[] => {
-    const errors: string[] = []
+export const validateGraduationYear = (graduationYear: string): { itemErrors: string[] } => {
+    const itemErrors: string[] = []
     
-    let isSelected = graduationYear.length > 0
-    let tooSmall = Number(graduationYear) <= 1900
-    let tooLarge = Number(graduationYear) >= 2200
-    let strTooLarge = graduationYear.length > 4
-    let isSpecialCharacter = /[@#$%^&*_+=\[\]{};'"\\|<>\/?]/.test(graduationYear)
-    let hasLetter = /\D/.test(graduationYear)
-    
-    if(!isSelected){
-        errors.push("Graduation Year was not input")
-    }
-     if(tooSmall){
-        errors.push("Graduation Year too old")
-    }
-     if(tooLarge){
-        errors.push("Graduation year is too far in the future")
-    }
-     if(strTooLarge){
-        errors.push("Graduation input too large")
-    }
-     if(isSpecialCharacter){
-        errors.push("Graduation input contains a special character")
-    }
-     if(hasLetter){
-        errors.push("Graduation input contains a letter")
+    if (!graduationYear || graduationYear.trim() === "") {
+        itemErrors.push("Graduation Date was not selected");
+        return { itemErrors };
     }
 
-    return errors
+    const parts = graduationYear.trim().split(/\s+/);
+    let month = "";
+    let yearStr = "";
+
+    if (parts.length === 2) {
+        [month, yearStr] = parts;
+    } else if (parts.length === 1) {
+        if (/^\d+$/.test(parts[0])) {
+            yearStr = parts[0];
+        } else {
+            month = parts[0];
+        }
+    }
+
+    const year = Number(yearStr);
+    const currentYear = new Date().getFullYear();
+
+    if (!month || !yearStr) {
+        itemErrors.push("Both month and year must be selected");
+    }
+
+    if (yearStr && !isNaN(year)) {
+        if (year < currentYear) {
+            itemErrors.push(`Graduation year cannot be earlier than the current year (${currentYear})`);
+        } else if (year > 2200) {
+            itemErrors.push("Graduation year is too far in the future");
+        }
+    }
+
+    return { itemErrors }
 }
 
 // Links
-export const validateLinks = (link : string) => {
-    let isEmpty = (link.trim() == "")
-    let strTooSmall = link.length < 10
-    let strTooLarge = link.length > 200
-    let whiteSpace = (/\s/.test(link))
-    let validProtocol = /^https?:\/\//i.test(link)
-    
-    return !isEmpty && !strTooSmall && !strTooLarge && !whiteSpace && validProtocol 
-}
+export const validateLinks = (links: string[]): { sectionErrors: string[], itemErrors: string[][] } => {
+    const sectionErrors: string[] = [];
+    if (links.length > 5) {
+        sectionErrors.push("You cannot have more than 5 links.");
+    }
 
-export const getLinkError = (link: string): string => {
-  return validateLinks(link) ? "" : "Link is invalid.";
+    const itemErrors = links.map(link => validateLink(link));
+    
+    return { sectionErrors, itemErrors };
+};
+
+export const validateLink = (link: string): string[] => {
+    const errors: string[] = [];
+    const trimmed = link.trim();
+
+    if (trimmed.length === 0) {
+        errors.push("Link cannot be empty");
+        return errors;
+    }
+
+    if (trimmed.length > 200) {
+        errors.push("Link is too long (max 200 characters)");
+    }
+
+    if (/\s/.test(trimmed)) {
+        errors.push("Link cannot contain spaces");
+    }
+
+    // Forgiving Protocol Implementation
+    let urlToTest = trimmed;
+    if (!urlToTest.startsWith("http://") && !urlToTest.startsWith("https://")) {
+        urlToTest = "https://" + urlToTest;
+    }
+
+    try {
+        const url = new URL(urlToTest);
+        
+        if (!url.hostname || !url.hostname.includes(".")) {
+            errors.push("Link must contain a valid domain (e.g., .com)");
+        }
+    } catch {
+        errors.push("Link format is invalid");
+    }
+
+    return errors;
 };
 
 
 // Major
-export const validateMajor = (major: string): string[] => {
-    const errors: string[] = []
+export const validateMajor = (major: string): { itemErrors: string[] } => {
+    const itemErrors: string[] = []
 
     let isSelectd = (major !== ("Select Major"))
     let validMajor = ucfMajors.includes(major)
@@ -221,28 +262,25 @@ export const validateMajor = (major: string): string[] => {
     let isSpecialCharacter = /[@#$%^&*_+=\[\]{};'"\\|<>\/?]/.test(major)
     
     if(!isSelectd){
-        errors.push("Major was not selected")
+        itemErrors.push("Major was not selected")
     }
     if(!validMajor){
-        errors.push("Valid major from list was not input")
-    }
-    if(strTooSmall){
-        errors.push("Selected Major length too small")
+        itemErrors.push("Valid major from list was not input")
     }
     if(strTooLarge){
-        errors.push("Selected Major length too large")
+        itemErrors.push("Selected Major length too large")
     }
     if(isSpecialCharacter){
-        errors.push("Selected Major contains an invalid special character")
+        itemErrors.push("Selected Major contains an invalid special character")
     }
    
-    return errors
+    return { itemErrors }
 }   
 
 
 // Name 
-export const validateName = (name: string): string[] => {
-    const errors: string[] = []
+export const validateName = (name: string): { itemErrors: string[] } => {
+    const itemErrors: string[] = []
     
     let isSelected = name.length > 0
     let tooLarge = name.length > 30
@@ -251,38 +289,38 @@ export const validateName = (name: string): string[] => {
     let isSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(name)
 
     if(!isSelected){
-        errors.push("Name was not input")
+        itemErrors.push("Name was not input")
     }
     if(tooLarge){
-        errors.push("Name input too long")
+        itemErrors.push("Name input too long")
     }
     if(hasNumber){
-        errors.push("Name input contains a number")
+        itemErrors.push("Name input contains a number")
     }
     if(isSpecialCharacter){
-        errors.push("Name contains invalid special character")
+        itemErrors.push("Name contains invalid special character")
     }
 
-    return errors
+    return { itemErrors }
 }
 
 
 // Picture
 
-export const validatePicture = (picture: File): string[] => {
-    const errors: string[] = []
+export const validatePicture = (picture: File): { itemErrors: string[] } => {
+    const itemErrors: string[] = []
     let tooLarge = picture.size > 5 * 1024 * 1024; // 5MB
     let isNotImage = !picture.type.startsWith("image/");
 
     if(tooLarge){
-        errors.push ("Picture too large")
+        itemErrors.push ("Picture too large")
     }
 
     if(isNotImage){
-        errors.push ("File is not a valid image")
+        itemErrors.push ("File is not a valid image")
     }
 
-    return errors
+    return { itemErrors }
 }
 
 
@@ -299,15 +337,30 @@ export const validateProjectDescription = (description: string) => {
     return trimmed.length > 0 && trimmed.length <= 500; // This length can be adjusted to meet the requirements
 };
 
-export const validateProjectLink = (link: string) => {
+export const validateProjectLink = (link: string): string[] => {
+    const errors: string[] = [];
     const trimmed = link.trim();
-    if (trimmed.length === 0) return true;
-    try {
-        const url = new URL(trimmed);
-        return url.protocol === "http:" || url.protocol === "https:";
-    } catch {
-        return false;
+
+    if (trimmed.length === 0) {
+        return errors; // Optional for projects? Let's assume it is.
     }
+
+    // Forgiving Protocol Implementation
+    let urlToTest = trimmed;
+    if (!urlToTest.startsWith("http://") && !urlToTest.startsWith("https://")) {
+        urlToTest = "https://" + urlToTest;
+    }
+
+    try {
+        const url = new URL(urlToTest);
+        if (!url.hostname || !url.hostname.includes(".")) {
+            errors.push("Project link must contain a valid domain");
+        }
+    } catch {
+        errors.push("Project link format is invalid");
+    }
+
+    return errors;
 };
 
 export const getProjectErrors = (
@@ -320,29 +373,36 @@ export const getProjectErrors = (
     description: validateProjectDescription(description)
       ? ""
       : "Project description is invalid.",
-    link: validateProjectLink(link) ? "" : "Project link is invalid.",
+    link: validateProjectLink(link).join(", "),
   };
 };
 
 // Resume
-export const validateResume = (resume: string): string[] => {
-    const errors: string[] = []
-    
-    // basic url check
-    try{
-        const trimmed = resume.trim();
-        console.log("Trimmed input:", trimmed);
-        const url = new URL(trimmed);
-        console.log("Protocol:", url.protocol);
-        if(url.protocol !== "http:" && url.protocol !== "https:"){
-            errors.push("Resume input contained invalid addressing protocol")
-        }
-    } 
-    catch(e){
-        errors.push("Resume input is not a valid URL")
+export const validateResume = (resume: string): { itemErrors: string[] } => {
+    const itemErrors: string[] = []
+    const trimmed = resume.trim();
+
+    if (trimmed.length === 0) {
+        itemErrors.push("Resume link cannot be empty");
+        return { itemErrors };
     }
 
-    return errors
+    // Forgiving Protocol Implementation
+    let urlToTest = trimmed;
+    if (!urlToTest.startsWith("http://") && !urlToTest.startsWith("https://")) {
+        urlToTest = "https://" + urlToTest;
+    }
+
+    try {
+        const url = new URL(urlToTest);
+        if (!url.hostname || !url.hostname.includes(".")) {
+            itemErrors.push("Resume link must contain a valid domain");
+        }
+    } catch (e) {
+        itemErrors.push("Resume input is not a valid URL")
+    }
+
+    return { itemErrors }
 };
 
 // School Year
@@ -354,32 +414,28 @@ const schoolYearOptions = [
     "Graduate"
 ];
 
-export const validateSchoolYear = (schoolYear: string): string[] => {
-    const errors: string[] = []
+export const validateSchoolYear = (schoolYear: string): { itemErrors: string[] } => {
+    const itemErrors: string[] = []
 
-    let isSelected = schoolYear.length > 0
     let validSchoolYear = schoolYearOptions.includes(schoolYear)
     let strTooLarge = schoolYear.length > 9
     let isSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(schoolYear)
     let hasNumber = /\d/.test(schoolYear)
 
-    if(!isSelected){
-        errors.push("School Year input was not selected.")
-    }
     if(!validSchoolYear){
-        errors.push("Valid school year was not selected")
+        itemErrors.push("Valid school year was not selected")
     }
     if(strTooLarge){
-        errors.push("School year input was too large")
+        itemErrors.push("School year input was too large")
     }
     if(isSpecialCharacter){
-        errors.push("School year included a special character")
+        itemErrors.push("School year included a special character")
     }
     if(hasNumber){
-        errors.push("School year included a number input")
+        itemErrors.push("School year included a number input")
     }
 
-    return errors
+    return { itemErrors }
 }
 
 

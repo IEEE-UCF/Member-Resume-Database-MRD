@@ -12,7 +12,7 @@ interface PictureComponentProps {
 const PictureComponent = ({ 
     setFormData 
 }: PictureComponentProps) => {
-    const [errors, setErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[]>([])
     const [tempFile, setTempFile] = useState<File | null>(null)
 
     return (
@@ -20,12 +20,12 @@ const PictureComponent = ({
             <h3>Picture</h3>
             
             {
-                errors.length > 0 && 
+                itemErrors.length > 0 && 
                 (<>
-                    <p>PICTURE IS INVALID BECAUSE:</p>
+                    <p>PICTURE IS NOT VALID BECAUSE:</p>
 
                     {
-                        printArray(errors, "Picture")
+                        printArray(itemErrors, "Picture")
                     }
                 </>)
             }
@@ -45,13 +45,14 @@ const PictureComponent = ({
                 onClick={(e) =>{
                     e.preventDefault()
                     if(tempFile) {
-                        setErrors(validatePicture(tempFile))
+                        const { itemErrors: iErrors } = validatePicture(tempFile)
+                        setItemErrors(iErrors)
                     } else {
-                        setErrors(["No picture selected"])
+                        setItemErrors(["No picture selected"])
                     }
                 }}
             >
-                Submit
+                Submit Picture
             </button>
         </>
     );

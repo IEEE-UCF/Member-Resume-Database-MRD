@@ -169,12 +169,46 @@ export const setGraduationYear = (
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
     setFormData(
-        (prev) => ({...prev, graduationYear: Number(newValue)})
+        (prev) => ({...prev, graduationYear: newValue})
     )
 }
 
 
 // Links
+export const setLink = (
+    index: number,
+    value: string,
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => {
+        const result = [...prev.links];
+        result[index] = value;
+
+        return {
+            ...prev,
+            links: result
+        };
+    });
+};
+
+export const addLink = (
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => ({
+        ...prev,
+        links: [...prev.links, ""]
+    }));
+};
+
+export const removeLink = (
+    index: number,
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => ({
+        ...prev,
+        links: prev.links.filter((_, i) => i !== index)
+    }));
+};
 
 
 // Major

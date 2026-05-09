@@ -1,95 +1,76 @@
 import { Dispatch, SetStateAction, useState } from "react";
-
 import { type Form } from "../interfaces"
 
-import formStyles from "../styles/form.module.css"
-
-import { getLinkError } from "../utils/validations";
+import LinkComponent from "./LinkComponent";
+import { setLink, addLink, removeLink } from "../utils/onChanges";
+import { validateLinks } from "../utils/validations";
+import { printArray } from "../utils/printArray";
 
 interface LinksComponentProps {
     links: string[];
     setFormData: Dispatch<SetStateAction<Form>>;
 }
 
-const LinksComponent = ({
-  links,
-  setFormData,
+const LinksComponent = ({ 
+    links, 
+    setFormData 
 }: LinksComponentProps) => {
-  const [linkErrors, setLinkErrors] = useState<string[]>(
-    links.map(() => "")
-  );
+    const [sectionErrors, setSectionErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[][]>(links.map(() => []))
 
-  const validateSingleLink = (index: number) => {
-    const newErrors = [...linkErrors];
-    newErrors[index] = getLinkError(links[index]);
-    setLinkErrors(newErrors);
-  };
+    return (
+        <>
+            <h3>Links</h3>
 
-  return (
-    <>
-      <h3>Links</h3>
+            {
+                sectionErrors.length > 0 && 
+                (<>
+                    <p>LINKS SECTION IS NOT VALID BECAUSE:</p>
 
-      {links.map((link, index) => {
-        return (
-          <div
-            key={`links[${index}]`}
-            className={`${formStyles.child} ${formStyles.link}`}
-          >
-            <input
-              type="url"
-              name={`links[${index}]`}
-              placeholder="https://example.com"
-              value={link}
-              onChange={(e) => {
-                setFormData((prev) => {
-                  const result = [...prev.links];
-                  result[index] = e.target.value;
-                  return { ...prev, links: result };
-                });
-              }}
-            />
+                    {
+                        printArray(sectionErrors, "Links")
+                    }
+                </>)
+            }
 
+            {links.map((link, index) => {
+                return (
+                    <LinkComponent
+                        key={index}
+                        link={link}
+                        index={index}
+                        errors={itemErrors[index] || []}
+                        onChange={(val) => setLink(index, val, setFormData)}
+                        onRemove={() => {
+                            removeLink(index, setFormData);
+                            // Keep error array in sync
+                            setItemErrors(prev => prev.filter((_, i) => i !== index));
+                        }}
+                    />
+                );
+            })}
+            
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                validateSingleLink(index);
-              }}
-            >
-              Validate Link
-            </button>
-
-            {linkErrors[index] && <p>{linkErrors[index]}</p>}
-
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-
-                setFormData((prev) => ({
-                  ...prev,
-                  links: prev.links.filter((_, i) => i !== index),
-                }));
-
-                setLinkErrors((prev) => prev.filter((_, i) => i !== index));
-              }}
-            >
-              Remove
-            </button>
-          </div>
-        );
-      })}
-            <input
-                type="button"
-                value="Add Link"
                 onClick={(e) => {
-                    e.preventDefault()
-                    return (
-                        setFormData((prev) => ({
-                            ...prev,
-                            links: [...prev.links, ""],
-                        }))
-                    )
+                    e.preventDefault();
+                    addLink(setFormData);
+                    // Add empty error slot for new link
+                    setItemErrors(prev => [...prev, []]);
                 }}
-            />
+            >
+                Add Link
+            </button>
+
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    const { sectionErrors: sErrors, itemErrors: iErrors } = validateLinks(links);
+                    setSectionErrors(sErrors);
+                    setItemErrors(iErrors);
+                }}
+            >
+                Submit All Links
+            </button>
         </>
     );
 };

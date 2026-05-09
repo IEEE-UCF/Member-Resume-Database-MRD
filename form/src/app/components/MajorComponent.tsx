@@ -16,19 +16,19 @@ const MajorComponent = ({
     major, 
     setFormData 
 }: MajorComponentProps) => {
-    const[errors, setErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[]>([])
 
     return (
         <>
             <h3>Major</h3>
 
             {
-                errors.length > 0 && 
+                itemErrors.length > 0 && 
                 (<>
                     <p>MAJOR IS NOT VALID BECAUSE:</p>
 
                     {
-                        printArray(errors, "major")
+                        printArray(itemErrors, "major")
                     }
                </>)
             }
@@ -49,10 +49,11 @@ const MajorComponent = ({
             <button
                 onClick={(e) => {
                     e.preventDefault()
-                    setErrors(validateMajor(major))
+                    const { itemErrors: iErrors } = validateMajor(major)
+                    setItemErrors(iErrors)
                 }}
             >
-                Submit
+                Submit Major
             </button>
         </>
     );

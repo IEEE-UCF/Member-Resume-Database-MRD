@@ -22,19 +22,19 @@ const SchoolYearComponent = ({
     schoolYear, 
     setFormData 
 }: SchoolYearComponentProps) => {
-    const [errors, setErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[]>([])
     
     return (
         <div>
             <h3>School Year</h3>
 
             {
-                errors.length > 0 && 
+                itemErrors.length > 0 && 
                 (<>
                     <p>SCHOOL YEAR IS NOT VALID BECAUSE:</p>
                     
                     {
-                        printArray(errors, "schoolYear")
+                        printArray(itemErrors, "schoolYear")
                     }
                 </>)
             }
@@ -54,10 +54,11 @@ const SchoolYearComponent = ({
             <button
                 onClick={(e) => {
                     e.preventDefault()
-                    setErrors(validateSchoolYear(schoolYear))
+                    const { itemErrors: iErrors } = validateSchoolYear(schoolYear)
+                    setItemErrors(iErrors)
                 }}
             >
-                Submit
+                Submit School Year
             </button>
         </div>
     );

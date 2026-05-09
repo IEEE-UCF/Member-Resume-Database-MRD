@@ -69,6 +69,16 @@ const ClubsComponent = ({
               setClubDetails(index, "name", e.target.value, setFormData)
             }
           />
+          
+          <input
+            type="text"
+            name={`clubs[${index}].title`}
+            placeholder="Your Title"
+            value={club.title}
+            onChange={(e) =>
+              setClubDetails(index, "title", e.target.value, setFormData)
+            }
+          />
 
           <textarea
             name={`clubs[${index}].description`}
@@ -78,16 +88,6 @@ const ClubsComponent = ({
               setClubDetails(index, "description", e.target.value, setFormData)
             }
             rows={3}
-          />
-
-          <input
-            type="text"
-            name={`clubs[${index}].title`}
-            placeholder="Your Title"
-            value={club.title}
-            onChange={(e) =>
-              setClubDetails(index, "title", e.target.value, setFormData)
-            }
           />
 
           <button

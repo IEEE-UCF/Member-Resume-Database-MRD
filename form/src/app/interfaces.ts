@@ -59,7 +59,7 @@ export interface Form {
     resume: string;
     major: string;
     schoolYear: string;
-    graduationYear: number;
+    graduationYear: string;
     links: string[];
     educations: Education[];
     clubs: Experience[];
@@ -75,7 +75,7 @@ export const createEmptyForm = (): Form => {
         resume: "",
         major: "",
         schoolYear: "",
-        graduationYear: 0,
+        graduationYear: "",
         links: [""],
         educations: [createEmptyEducation()],
         clubs: [createEmptyExperience()],

@@ -14,19 +14,19 @@ const NameComponent = ({
     name, 
     setFormData 
 }: NameComponentProps) => {
-    const [errors, setErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[]>([])
 
     return (
         <>
             <h3>Name</h3>
 
             {
-                errors.length > 0 &&
+                itemErrors.length > 0 &&
                 (<>
                     <p>NAME IS NOT VALID BECAUSE:</p>
 
                     {
-                        printArray(errors, "Name")
+                        printArray(itemErrors, "Name")
                     }
                 </>)
             }
@@ -40,10 +40,11 @@ const NameComponent = ({
             <button
                 onClick={(e) => {
                     e.preventDefault()
-                    setErrors(validateName(name))
+                    const { itemErrors: iErrors } = validateName(name)
+                    setItemErrors(iErrors)
                 }}
             >
-                Submit
+                Submit Name
             </button>
         </>
     );

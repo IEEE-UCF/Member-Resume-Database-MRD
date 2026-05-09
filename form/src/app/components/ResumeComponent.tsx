@@ -14,19 +14,19 @@ const ResumeComponent = ({
     resume, 
     setFormData 
 }: ResumeComponentProps) => {
-    const[errors, setErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[]>([])
 
     return (
         <>
             <h3>Resume</h3>
 
             {
-                errors.length > 0 && 
+                itemErrors.length > 0 && 
                 (<>
                     <p>RESUME IS NOT VALID BECAUSE:</p>
 
                     {
-                        printArray(errors, "resume")
+                        printArray(itemErrors, "resume")
                     }
                 </>)
             }
@@ -41,10 +41,11 @@ const ResumeComponent = ({
             <button
                 onClick={(e) => {
                     e.preventDefault()
-                    setErrors(validateResume(resume))
+                    const { itemErrors: iErrors } = validateResume(resume)
+                    setItemErrors(iErrors)
                 }}
             >
-                Submit
+                Submit Resume
             </button>
         </>
     );
