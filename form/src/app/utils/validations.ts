@@ -21,6 +21,21 @@ export const validateBio = (bio: string): { itemErrors: string[] } => {
 }
 
 // Clubs
+export const validateClubName = (name: string): boolean => {
+    const trimmed = name.trim();
+    return trimmed.length > 0 && trimmed.length <= 50;
+};
+
+export const validateClubDescription = (description: string): boolean => {
+    const trimmed = description.trim();
+    return trimmed.length <= 200;
+};
+
+export const validateClubTitle = (title: string): boolean => {
+    const trimmed = title.trim();
+    return trimmed.length > 0 && trimmed.length <= 50;
+};
+
 export const validateClubs = (clubs: any[]): { sectionErrors: string[], itemErrors: string[][] } => {
     const sectionErrors: string[] = [];
     if (clubs.length > 5) {

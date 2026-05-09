@@ -58,10 +58,14 @@ const Form = () => {
 
     const hasErrors = () => {
         return Object.values(formErrors).some(errorGroup => {
+            // Check if it's an array-based error group (contains sectionErrors)
             if ("sectionErrors" in errorGroup) {
-                return errorGroup.sectionErrors.length > 0 || errorGroup.itemErrors.some(item => item.length > 0);
+                const group = errorGroup as { sectionErrors: string[], itemErrors: string[][] };
+                return group.sectionErrors.length > 0 || group.itemErrors.some(item => item.length > 0);
             }
-            return errorGroup.itemErrors.length > 0;
+            // Otherwise it's a simple itemErrors group
+            const group = errorGroup as { itemErrors: string[] };
+            return group.itemErrors.length > 0;
         });
     };
 
@@ -180,9 +184,9 @@ const Form = () => {
                     />
                 </div>
 
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "2rem" }}>
+                <div>
                     <button type="submit">Confirm All Information</button>
-                    {hasErrors() && <span style={{ color: "red", fontWeight: "bold" }}>There are errors in the form</span>}
+                    {hasErrors() && <span>There are errors in the form</span>}
                 </div>
             </form>
         </>
