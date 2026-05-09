@@ -1,5 +1,5 @@
-# Member Portfolio Service (MPS)
-The following document describes the current structure and architecture of the Member Portfolio Service (MPS). This project is built with a focus on modularity, architectural symmetry, and robust, centralized validation.
+# Member Resume Database (MRD)
+The following document describes the current structure and architecture of the Member Resume Database (MRD). This project is built with a focus on modularity, architectural symmetry, and robust, centralized validation.
 
 ## Contents
 <ul>
@@ -62,7 +62,7 @@ Navigate to each respective folder and run:
 
 ## 2. Architectural Goal
 
-The hallmark of the MPS project is **Symmetry**. Every feature, whether it is a single input like a Bio or a complex list like Education, follows the exact same architectural pattern. This consistency ensures that the codebase is predictable, easy to maintain, and simple to extend.
+The hallmark of the MRD project is **Symmetry**. Every feature, whether it is a single input like a Bio or a complex list like Education, follows the exact same architectural pattern. This consistency ensures that the codebase is predictable, easy to maintain, and simple to extend.
 
 ## 3. Form Architecture
 
@@ -163,7 +163,7 @@ The client (`/website/client`) mirrors the structural symmetry of the form but i
 
 ## 6. Conclusion
 
-MPS is more than just a form; it is a demonstration of how strict architectural symmetry and centralized logic can create a robust, scalable application. By isolating every field and unifying the validation flow, we have built a foundation that is ready for production-level features.
+MRD is more than just a form; it is a demonstration of how strict architectural symmetry and centralized logic can create a robust, scalable application. By isolating every field and unifying the validation flow, we have built a foundation that is ready for production-level features.
 
 ## 7. Future Roadmap
 
