@@ -1,6 +1,6 @@
-# Member Portfolio Service (MPS) - Version 2 Milestones
+# Member Resume Database (MRD) - Version 2 Milestones
 
-Version 2 represents the transition of the Member Portfolio Service from a UI prototype into a functional full-stack application. The primary achievement of this version is the implementation of **Hallmarked Symmetry** across all form data and a unified validation architecture.
+Version 2 represents the transition of the Member Resume Database from a UI prototype into a functional full-stack application. The primary achievement of this version is the implementation of **Hallmarked Symmetry** across all form data and a unified validation architecture.
 
 ## 1. The Global Master Switch
 
