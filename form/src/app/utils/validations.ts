@@ -384,21 +384,23 @@ export const validateSchoolYear = (schoolYear: string): string[] => {
 
 
 // Skills
+export const validateSkills = (skills: string[]): { sectionErrors: string[], itemErrors: string[][] } => {
+    const sectionErrors: string[] = [];
+    if (skills.length > 10) {
+        sectionErrors.push("You cannot have more than 10 skills.");
+    }
+
+    const itemErrors = skills.map(skill => validateSkill(skill));
+    
+    return { sectionErrors, itemErrors };
+};
+
 export const validateSkill = (skill: string): string[] => {
-    const errors: string[] = []
-
-    let tooLong = skill.trim().length > 50
-    let tooShort = skill.trim().length < 1
-
-    if(tooLong){
-        errors.push("The skill length is too long")
-    }
-    
-    if(tooShort){
-        errors.push("A skill cannot be empty")
-    }
-    
-    return errors
+    const errors: string[] = [];
+    const trimmed = skill.trim();
+    if (trimmed.length >= 25) errors.push("Skill is too long");
+    if (trimmed.length === 0) errors.push("Skill cannot be empty");
+    return errors;
 };
 
 // Work experience

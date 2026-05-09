@@ -85,3 +85,37 @@ export const createEmptyForm = (): Form => {
         skills: [""],
     };
 };
+
+export interface FormErrors {
+    name: string[];
+    bio: string[];
+    resume: string[];
+    major: string[];
+    schoolYear: string[];
+    graduationYear: string[];
+    links: string[];
+    educations: string[];
+    clubs: string[];
+    workExperiences: string[];
+    picture: string[];
+    projects: string[];
+    skills: string[];
+}
+
+export const createEmptyFormErrors = (): FormErrors => {
+    return {
+        name: [],
+        bio: [],
+        resume: [],
+        major: [],
+        schoolYear: [],
+        graduationYear: [],
+        links: [],
+        educations: [],
+        clubs: [],
+        workExperiences: [],
+        picture: [],
+        projects: [],
+        skills: [],
+    };
+};
