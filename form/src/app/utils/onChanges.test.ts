@@ -185,3 +185,39 @@ test("properly validated the skill input", () => {
 });
 
 // Work experience
+const validWorkExperienceName = "Deloitte"
+const invalidWorkExperienceName = "a".repeat(101)
+const emptyWorkExperienceName = ""
+
+const validWorkExperienceTitle = "Software Engineer Intern"
+const invalidWorkExperienceTitle = "a".repeat(101)
+const emptyWorkExperienceTitle = ""
+
+const validWorkExperienceDescription =
+  "Worked on frontend and backend tasks, fixed bugs, and collaborated with the team."
+const invalidWorkExperienceDescription = "a".repeat(501)
+const emptyWorkExperienceDescription = ""
+
+test("properly validated the work experience name input", () => {
+  expect(validations.validateWorkExperienceName(validWorkExperienceName)).toBe(true)
+  expect(validations.validateWorkExperienceName(invalidWorkExperienceName)).toBe(false)
+  expect(validations.validateWorkExperienceName(emptyWorkExperienceName)).toBe(true)
+})
+
+test("properly validated the work experience title input", () => {
+  expect(validations.validateWorkExperienceTitle(validWorkExperienceTitle)).toBe(true)
+  expect(validations.validateWorkExperienceTitle(invalidWorkExperienceTitle)).toBe(false)
+  expect(validations.validateWorkExperienceTitle(emptyWorkExperienceTitle)).toBe(true)
+})
+
+test("properly validated the work experience description input", () => {
+  expect(
+    validations.validateWorkExperienceDescription(validWorkExperienceDescription)
+  ).toBe(true)
+  expect(
+    validations.validateWorkExperienceDescription(invalidWorkExperienceDescription)
+  ).toBe(false)
+  expect(
+    validations.validateWorkExperienceDescription(emptyWorkExperienceDescription)
+  ).toBe(true)
+})
