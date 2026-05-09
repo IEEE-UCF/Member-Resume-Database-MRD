@@ -69,7 +69,7 @@ const LinksComponent = ({
                     setItemErrors(iErrors);
                 }}
             >
-                Submit All Links
+                Confirm All Links
             </button>
         </>
     );

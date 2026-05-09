@@ -2,12 +2,20 @@ export interface Experience {
     name: string;
     description: string;
     title: string;
+    dates: {
+        start: string;
+        end: string;
+    };
 }
-export const createEmptyExperience = () => {
+export const createEmptyExperience = (): Experience => {
     return {
         name: "",
         description: "",
-        title: ""
+        title: "",
+        dates: {
+            start: "",
+            end: "",
+        }
     };
 };
 
@@ -44,12 +52,20 @@ export interface Project {
     name: string;
     description: string;
     link: string;
+    dates: {
+        start: string;
+        end: string;
+    };
 }
 export const createEmptyProject = (): Project => {
     return {
         name: "",
         description: "",
         link: "",
+        dates: {
+            start: "",
+            end: "",
+        },
     };
 };
 
@@ -76,13 +92,13 @@ export const createEmptyForm = (): Form => {
         major: "",
         schoolYear: "",
         graduationYear: "",
-        links: [""],
-        educations: [createEmptyEducation()],
-        clubs: [createEmptyExperience()],
-        workExperiences: [createEmptyExperience()],
+        links: [],
+        educations: [],
+        clubs: [],
+        workExperiences: [],
         picture: null,
-        projects: [createEmptyProject()],
-        skills: [""],
+        projects: [],
+        skills: [],
     };
 };
 

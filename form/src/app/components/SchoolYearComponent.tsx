@@ -58,7 +58,7 @@ const SchoolYearComponent = ({
                     setItemErrors(iErrors)
                 }}
             >
-                Submit School Year
+                Confirm School Year
             </button>
         </div>
     );

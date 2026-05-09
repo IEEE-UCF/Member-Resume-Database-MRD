@@ -53,7 +53,7 @@ const MajorComponent = ({
                     setItemErrors(iErrors)
                 }}
             >
-                Submit Major
+                Confirm Major
             </button>
         </>
     );

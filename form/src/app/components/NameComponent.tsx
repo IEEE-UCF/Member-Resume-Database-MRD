@@ -44,7 +44,7 @@ const NameComponent = ({
                     setItemErrors(iErrors)
                 }}
             >
-                Submit Name
+                Confirm Name
             </button>
         </>
     );

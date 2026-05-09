@@ -17,29 +17,37 @@ export const setBio = (
 // Clubs
 export const setClubDetails = (
     index: number,
-    field: "name" | "description" | "title",
+    field: "name" | "description" | "title" | "startDate" | "endDate",
     newValue: string,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    if (field === "name" && validations.validateClubName(newValue)) {
-        setFormData((prev) => {
-            const updated = [...prev.clubs];
-            updated[index].name = newValue;
-            return { ...prev, clubs: updated };
-        });
-    } else if (field === "description" && validations.validateClubDescription(newValue)) {
-        setFormData((prev) => {
-            const updated = [...prev.clubs];
-            updated[index].description = newValue;
-            return { ...prev, clubs: updated };
-        });
-    } else if (field === "title" && validations.validateClubTitle(newValue)) {
-        setFormData((prev) => {
-            const updated = [...prev.clubs];
-            updated[index].title = newValue;
-            return { ...prev, clubs: updated };
-        });
-    }
+    setFormData((prev) => {
+        const updated = [...prev.clubs];
+        if (field === "startDate") updated[index].dates.start = newValue;
+        else if (field === "endDate") updated[index].dates.end = newValue;
+        else updated[index][field] = newValue;
+        
+        return { ...prev, clubs: updated };
+    });
+};
+
+export const addClub = (
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => ({
+        ...prev,
+        clubs: [...prev.clubs, createEmptyExperience()]
+    }));
+};
+
+export const removeClub = (
+    index: number,
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => ({
+        ...prev,
+        clubs: prev.clubs.filter((_, i) => i !== index)
+    }));
 };
 
 // Education
@@ -242,30 +250,37 @@ export const setPicture = (
 // Projects
 export const setProjectDetails = (
     index: number,
-    field: "name" | "description" | "link",
+    field: "name" | "description" | "link" | "startDate" | "endDate",
     newValue: string,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    // Validates the input before updating the form data
-    if (field === "name" && validations.validateProjectName(newValue)) {
-        setFormData((prev) => {
-            const updatedProjects = [...prev.projects];
-            updatedProjects[index].name = newValue;
-            return { ...prev, projects: updatedProjects };
-        });
-    } else if (field === "description" && validations.validateProjectDescription(newValue)) {
-        setFormData((prev) => {
-            const updatedProjects = [...prev.projects];
-            updatedProjects[index].description = newValue;
-            return { ...prev, projects: updatedProjects };
-        });
-    } else if (field === "link" && validations.validateProjectLink(newValue)) {
-        setFormData((prev) => {
-            const updatedProjects = [...prev.projects];
-            updatedProjects[index].link = newValue;
-            return { ...prev, projects: updatedProjects };
-        });
-    }
+    setFormData((prev) => {
+        const updated = [...prev.projects];
+        if (field === "startDate") updated[index].dates.start = newValue;
+        else if (field === "endDate") updated[index].dates.end = newValue;
+        else updated[index][field] = newValue;
+        
+        return { ...prev, projects: updated };
+    });
+};
+
+export const addProject = (
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => ({
+        ...prev,
+        projects: [...prev.projects, createEmptyProject()]
+    }));
+};
+
+export const removeProject = (
+    index: number,
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => ({
+        ...prev,
+        projects: prev.projects.filter((_, i) => i !== index)
+    }));
 };
 
 // Resume
@@ -339,21 +354,17 @@ export const removeSkill = (
 // Work experience
 export const setWorkExperienceDetails = (
   index: number,
-  field: "name" | "title" | "description",
+  field: "name" | "title" | "description" | "startDate" | "endDate",
   value: string,
   setFormData: Dispatch<SetStateAction<Form>>
 ) => {
   setFormData((prev) => {
-    const result = [...prev.workExperiences];
-    result[index] = {
-      ...result[index],
-      [field]: value,
-    };
+    const updated = [...prev.workExperiences];
+    if (field === "startDate") updated[index].dates.start = value;
+    else if (field === "endDate") updated[index].dates.end = value;
+    else updated[index][field] = value;
 
-    return {
-      ...prev,
-      workExperiences: result,
-    };
+    return { ...prev, workExperiences: updated };
   });
 };
 

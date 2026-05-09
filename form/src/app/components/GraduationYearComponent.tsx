@@ -90,7 +90,7 @@ const GraduationYearComponent = ({
                     setItemErrors(iErrors)
                 }}
             >
-                Submit Graduation Year
+                Confirm Graduation Year
             </button>
         </div>
     );

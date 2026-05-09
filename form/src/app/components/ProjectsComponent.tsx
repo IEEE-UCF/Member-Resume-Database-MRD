@@ -1,147 +1,73 @@
 import { Dispatch, SetStateAction, useState } from "react";
+import { type Form, type Project } from "../interfaces"
 
-import { type Form, type Project, createEmptyProject } from "../interfaces"
-
-import formStyles from "../styles/form.module.css"
-
-import { setProjectDetails } from "../utils/onChanges";
-import {
-  validateProjectName,
-  validateProjectDescription,
-  validateProjectLink,
-} from "../utils/validations";
+import ProjectComponent from "./ProjectComponent";
+import { setProjectDetails, addProject, removeProject } from "../utils/onChanges";
+import { validateProjects } from "../utils/validations";
+import { printArray } from "../utils/printArray";
 
 interface ProjectsComponentProps {
-    projects: Project[]
-    setFormData: Dispatch<SetStateAction<Form>>
+    projects: Project[];
+    setFormData: Dispatch<SetStateAction<Form>>;
 }
 
-const ProjectsComponent = ({
-  projects,
-  setFormData,
+const ProjectsComponent = ({ 
+    projects, 
+    setFormData 
 }: ProjectsComponentProps) => {
-  const [projectErrors, setProjectErrors] = useState<
-    { name: string; description: string; link: string }[]
-  >(
-    projects.map(() => ({
-      name: "",
-      description: "",
-      link: "",
-    }))
-  );
+    const [sectionErrors, setSectionErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[][]>(projects.map(() => []))
 
-  const validateSingleProject = (index: number) => {
-    const project = projects[index];
-    const newErrors = [...projectErrors];
+    return (
+        <>
+            <h3>Projects</h3>
 
-    newErrors[index] = {
-      name: validateProjectName(project.name)
-        ? ""
-        : "Project name is invalid.",
-      description: validateProjectDescription(project.description)
-        ? ""
-        : "Project description is invalid.",
-      link: validateProjectLink(project.link)
-        ? ""
-        : "Project link is invalid.",
-    };
-
-    setProjectErrors(newErrors);
-  };
-
-  return (
-    <>
-      <h3>Projects</h3>
-
-      {projects.map((project, index) => (
-        <div
-          key={`projects[${index}]`}
-          className={`${formStyles.child} ${formStyles.project}`}
-        >
-          <h4>Project {index + 1}</h4>
-
-          <input
-            type="text"
-            name={`projects[${index}].name`}
-            placeholder="Project Name"
-            value={project.name}
-            onChange={(e) =>
-              setProjectDetails(index, "name", e.target.value, setFormData)
+            {
+                sectionErrors.length > 0 && 
+                (<>
+                    <p>PROJECTS SECTION IS NOT VALID BECAUSE:</p>
+                    {printArray(sectionErrors, "Projects")}
+                </>)
             }
-          />
 
-          <textarea
-            name={`projects[${index}].description`}
-            placeholder="Project Description"
-            value={project.description}
-            onChange={(e) =>
-              setProjectDetails(
-                index,
-                "description",
-                e.target.value,
-                setFormData
-              )
-            }
-            rows={5}
-          />
+            {projects.map((project, index) => {
+                return (
+                    <ProjectComponent
+                        key={index}
+                        project={project}
+                        index={index}
+                        errors={itemErrors[index] || []}
+                        onUpdateField={(field, val) => setProjectDetails(index, field as any, val, setFormData)}
+                        onRemove={() => {
+                            removeProject(index, setFormData);
+                            setItemErrors(prev => prev.filter((_, i) => i !== index));
+                        }}
+                    />
+                );
+            })}
+            
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    addProject(setFormData);
+                    setItemErrors(prev => [...prev, []]);
+                }}
+            >
+                Add Project
+            </button>
 
-          <input
-            type="text"
-            placeholder="Project Link"
-            value={project.link}
-            onChange={(e) =>
-              setProjectDetails(index, "link", e.target.value, setFormData)
-            }
-          />
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    const { sectionErrors: sErrors, itemErrors: iErrors } = validateProjects(projects);
+                    setSectionErrors(sErrors);
+                    setItemErrors(iErrors);
+                }}
+            >
+                Confirm All Projects
+            </button>
+        </>
+    );
+};
 
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              validateSingleProject(index);
-            }}
-          >
-            Validate Project
-          </button>
-
-          {projectErrors[index]?.name && <p>{projectErrors[index].name}</p>}
-          {projectErrors[index]?.description && (
-            <p>{projectErrors[index].description}</p>
-          )}
-          {projectErrors[index]?.link && <p>{projectErrors[index].link}</p>}
-
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-
-              setFormData((prev) => ({
-                ...prev,
-                projects: prev.projects.filter((_, i) => i !== index),
-              }));
-
-              setProjectErrors((prev) => prev.filter((_, i) => i !== index));
-            }}
-          >
-            Remove
-          </button>
-        </div>
-      ))}
-      
-        <input
-            type="button"
-            value="Add Project"
-            onClick={(e) => {
-                e.preventDefault()
-                setFormData((prev) => ({
-                    ...prev,
-                    projects: [
-                        ...prev.projects,
-                        createEmptyProject(),
-                    ],
-                }))
-            }}
-        />    
-    </>
-    )
-}
-
-export default ProjectsComponent
+export default ProjectsComponent;

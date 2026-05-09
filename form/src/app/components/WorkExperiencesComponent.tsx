@@ -1,132 +1,73 @@
 import { Dispatch, SetStateAction, useState } from "react";
+import { type Form, type Experience } from "../interfaces"
 
-import { type Form, type Experience, createEmptyExperience } from "../interfaces"
+import WorkExperienceComponent from "./WorkExperienceComponent";
+import { setWorkExperienceDetails, addWorkExperience, removeWorkExperience } from "../utils/onChanges";
+import { validateWorkExperiences } from "../utils/validations";
+import { printArray } from "../utils/printArray";
 
-import formStyles from "../styles/form.module.css"
-
-import {
-  setWorkExperienceDetails,
-  addWorkExperience,
-  removeWorkExperience,
-} from "../utils/onChanges";
-
-import { getWorkExperienceErrors } from "../utils/validations";
-
-interface WorkExperienceComponentProps {
+interface WorkExperiencesComponentProps {
     workExperiences: Experience[];
     setFormData: Dispatch<SetStateAction<Form>>;
 }
 
-const WorkExperienceComponent = ({
-  workExperiences,
-  setFormData,
-}: WorkExperienceComponentProps) => {
-  const [errors, setErrors] = useState<
-    { name: string; title: string; description: string }[]
-  >(
-    workExperiences.map(() => ({
-      name: "",
-      title: "",
-      description: "",
-    }))
-  );
+const WorkExperiencesComponent = ({ 
+    workExperiences, 
+    setFormData 
+}: WorkExperiencesComponentProps) => {
+    const [sectionErrors, setSectionErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[][]>(workExperiences.map(() => []))
 
-  const validateSingleWorkExperience = (index: number) => {
-    const experience = workExperiences[index];
-    const newErrors = [...errors];
+    return (
+        <>
+            <h3>Work Experience</h3>
 
-    newErrors[index] = getWorkExperienceErrors(
-      experience.name,
-      experience.title,
-      experience.description
-    );
-
-    setErrors(newErrors);
-  };
-
-  return (
-    <>
-      <h3>Work Experience</h3>
-
-      {workExperiences.map((experience, index) => (
-        <div
-          key={`workExperiences[${index}]`}
-          className={`${formStyles.child} ${formStyles.workExperience}`}
-        >
-          <h4>Experience {index + 1}</h4>
-
-          <input
-            type="text"
-            name={`workExperiences[${index}].name`}
-            placeholder="Company Name"
-            value={experience.name}
-            onChange={(e) =>
-              setWorkExperienceDetails(index, "name", e.target.value, setFormData)
+            {
+                sectionErrors.length > 0 && 
+                (<>
+                    <p>WORK EXPERIENCE SECTION IS NOT VALID BECAUSE:</p>
+                    {printArray(sectionErrors, "Work Experience")}
+                </>)
             }
-          />
 
-          <input
-            type="text"
-            name={`workExperiences[${index}].title`}
-            placeholder="Job Title"
-            value={experience.title}
-            onChange={(e) =>
-              setWorkExperienceDetails(index, "title", e.target.value, setFormData)
-            }
-          />
+            {workExperiences.map((exp, index) => {
+                return (
+                    <WorkExperienceComponent
+                        key={index}
+                        experience={exp}
+                        index={index}
+                        errors={itemErrors[index] || []}
+                        onUpdateField={(field, val) => setWorkExperienceDetails(index, field as any, val, setFormData)}
+                        onRemove={() => {
+                            removeWorkExperience(index, setFormData);
+                            setItemErrors(prev => prev.filter((_, i) => i !== index));
+                        }}
+                    />
+                );
+            })}
+            
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    addWorkExperience(setFormData);
+                    setItemErrors(prev => [...prev, []]);
+                }}
+            >
+                Add Work Experience
+            </button>
 
-          <textarea
-            name={`workExperiences[${index}].description`}
-            placeholder="Description"
-            value={experience.description}
-            onChange={(e) =>
-              setWorkExperienceDetails(
-                index,
-                "description",
-                e.target.value,
-                setFormData
-              )
-            }
-            rows={3}
-          />
-
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              validateSingleWorkExperience(index);
-            }}
-          >
-            Validate Work Experience
-          </button>
-
-          {errors[index]?.name && <p>{errors[index].name}</p>}
-          {errors[index]?.title && <p>{errors[index].title}</p>}
-          {errors[index]?.description && <p>{errors[index].description}</p>}
-
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              removeWorkExperience(index, setFormData);
-              setErrors((prev) => prev.filter((_, i) => i !== index));
-            }}
-          >
-            Remove Experience
-          </button>
-        </div>
-      ))}
-            <input
-                type="button"
-                value="Add Experience"
-                onClick={e =>
-                    setFormData(prev => ({
-                        ...prev,
-                        workExperiences: [...prev.workExperiences, createEmptyExperience()],
-                    }))
-                }
-            />
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    const { sectionErrors: sErrors, itemErrors: iErrors } = validateWorkExperiences(workExperiences);
+                    setSectionErrors(sErrors);
+                    setItemErrors(iErrors);
+                }}
+            >
+                Confirm All Work Experiences
+            </button>
         </>
     );
 };
 
-export default WorkExperienceComponent;
-
+export default WorkExperiencesComponent;

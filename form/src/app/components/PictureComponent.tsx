@@ -48,11 +48,11 @@ const PictureComponent = ({
                         const { itemErrors: iErrors } = validatePicture(tempFile)
                         setItemErrors(iErrors)
                     } else {
-                        setItemErrors(["No picture selected"])
+                        setItemErrors([])
                     }
                 }}
             >
-                Submit Picture
+                Confirm Picture
             </button>
         </>
     );

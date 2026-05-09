@@ -66,7 +66,7 @@ const SkillsComponent = ({
                     setItemErrors(iErrors);
                 }}
             >
-                Submit All Skills
+                Confirm All Skills
             </button>
         </>
     );

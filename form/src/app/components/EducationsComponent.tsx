@@ -90,7 +90,7 @@ const EducationsComponent = ({
                     setItemErrors(iErrors);
                 }}
             >
-                Submit All Educations
+                Confirm All Educations
             </button>
         </>
     );

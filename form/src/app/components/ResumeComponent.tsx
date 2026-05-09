@@ -45,7 +45,7 @@ const ResumeComponent = ({
                     setItemErrors(iErrors)
                 }}
             >
-                Submit Resume
+                Confirm Resume
             </button>
         </>
     );

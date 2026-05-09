@@ -7,52 +7,153 @@ import { ucfMajors } from "../data/majors";
 // Bio
 export const validateBio = (bio: string): { itemErrors: string[] } => {
     const itemErrors: string[] = []
+    const trimmed = bio.trim();
 
-    let strTooSmall = bio.length <= 0
-    let strTooLarge = bio.length > 8
-
-    if(strTooSmall) {
-        itemErrors.push("Bio input is too small.")
+    if (trimmed.length === 0) {
+        return { itemErrors };
     }
 
-    if(strTooLarge) {
-        itemErrors.push("Bio input is too large.")
+    if (trimmed.length > 8) {
+        itemErrors.push("Bio input is too large.");
     }
 
     return { itemErrors }
 }
 
 // Clubs
-export const validateClubName = (name: string) => {
-    const trimmed = name.trim();
-    if (trimmed.length === 0) return true;
-    return trimmed.length > 0 && trimmed.length <= 50; // This length can be adjusted to meet the requirements
+export const validateClubs = (clubs: any[]): { sectionErrors: string[], itemErrors: string[][] } => {
+    const sectionErrors: string[] = [];
+    if (clubs.length > 5) {
+        sectionErrors.push("You cannot have more than 5 club entries.");
+    }
+
+    const itemErrors = clubs.map(club => validateClub(club));
+    
+    return { sectionErrors, itemErrors };
 };
 
-export const validateClubDescription = (description: string) => {
-    const trimmed = description.trim();
-    if (trimmed.length === 0) return true;
-    return trimmed.length > 0 && trimmed.length <= 200; // This length can be adjusted to meet the requirements
+export const validateClub = (club: any): string[] => {
+    const itemErrors: string[] = [];
+    
+    if (club.name.trim() === "") {
+        itemErrors.push("Club Name cannot be empty");
+    } else if (!validateClubName(club.name)) {
+        itemErrors.push("Club Name is too long (max 50 chars)");
+    }
+
+    if (club.title.trim() === "") {
+        itemErrors.push("Club Title cannot be empty");
+    } else if (!validateClubTitle(club.title)) {
+        itemErrors.push("Club Title is too long (max 50 chars)");
+    }
+
+    if (club.dates.start.trim() === "") {
+        itemErrors.push("Start Date is required");
+    } else if (!validateEducationStartDate(club.dates.start, club.dates.end)) {
+        itemErrors.push("Start Date must be before End Date and valid format");
+    }
+
+    if (club.dates.end.trim() === "") {
+        itemErrors.push("End Date is required");
+    } else if (!validateEducationEndDate(club.dates.end, club.dates.start)) {
+        itemErrors.push("End Date is invalid format");
+    }
+
+    if (club.description.trim().length > 200) {
+        itemErrors.push("Description is too long (max 200 chars)");
+    }
+
+    return itemErrors;
 };
 
-export const validateClubTitle = (title: string) => {
-    const trimmed = title.trim();
-    if (trimmed.length === 0) return true;
-    return trimmed.length > 0 && trimmed.length <= 50; // This length can be adjusted to meet the requirements
+// Projects
+export const validateProjects = (projects: any[]): { sectionErrors: string[], itemErrors: string[][] } => {
+    const sectionErrors: string[] = [];
+    if (projects.length > 5) {
+        sectionErrors.push("You cannot have more than 5 project entries.");
+    }
+
+    const itemErrors = projects.map(project => validateProject(project));
+    
+    return { sectionErrors, itemErrors };
 };
-export const getClubErrors = (
-  name: string,
-  description: string,
-  title: string
-): { name: string; description: string; title: string } => {
-  return {
-    name: validateClubName(name) ? "" : "Club name is invalid.",
-    description: validateClubDescription(description)
-      ? ""
-      : "Club description is invalid.",
-    title: validateClubTitle(title) ? "" : "Club title is invalid.",
-  };
-};  
+
+export const validateProject = (project: any): string[] => {
+    const itemErrors: string[] = [];
+    
+    if (project.name.trim() === "") {
+        itemErrors.push("Project Name cannot be empty");
+    } else if (!validateProjectName(project.name)) {
+        itemErrors.push("Project Name is too long (max 100 chars)");
+    }
+
+    const projectLinkErrors = validateProjectLink(project.link);
+    projectLinkErrors.forEach(err => itemErrors.push(`Link: ${err}`));
+
+    if (project.dates.start.trim() === "") {
+        itemErrors.push("Start Date is required");
+    } else if (!validateEducationStartDate(project.dates.start, project.dates.end)) {
+        itemErrors.push("Start Date must be before End Date and valid format");
+    }
+
+    if (project.dates.end.trim() === "") {
+        itemErrors.push("End Date is required");
+    } else if (!validateEducationEndDate(project.dates.end, project.dates.start)) {
+        itemErrors.push("End Date is invalid format");
+    }
+
+    if (project.description.trim().length > 500) {
+        itemErrors.push("Description is too long (max 500 chars)");
+    }
+
+    return itemErrors;
+};
+
+// Work Experience
+export const validateWorkExperiences = (experiences: any[]): { sectionErrors: string[], itemErrors: string[][] } => {
+    const sectionErrors: string[] = [];
+    if (experiences.length > 5) {
+        sectionErrors.push("You cannot have more than 5 work experience entries.");
+    }
+
+    const itemErrors = experiences.map(exp => validateWorkExperience(exp));
+    
+    return { sectionErrors, itemErrors };
+};
+
+export const validateWorkExperience = (exp: any): string[] => {
+    const itemErrors: string[] = [];
+    
+    if (exp.name.trim() === "") {
+        itemErrors.push("Company Name cannot be empty");
+    } else if (!validateWorkExperienceName(exp.name)) {
+        itemErrors.push("Company Name is too long (max 100 chars)");
+    }
+
+    if (exp.title.trim() === "") {
+        itemErrors.push("Job Title cannot be empty");
+    } else if (!validateWorkExperienceTitle(exp.title)) {
+        itemErrors.push("Job Title is too long (max 100 chars)");
+    }
+
+    if (exp.dates.start.trim() === "") {
+        itemErrors.push("Start Date is required");
+    } else if (!validateEducationStartDate(exp.dates.start, exp.dates.end)) {
+        itemErrors.push("Start Date must be before End Date and valid format");
+    }
+
+    if (exp.dates.end.trim() === "") {
+        itemErrors.push("End Date is required");
+    } else if (!validateEducationEndDate(exp.dates.end, exp.dates.start)) {
+        itemErrors.push("End Date is invalid format");
+    }
+
+    if (exp.description.trim().length > 500) {
+        itemErrors.push("Description is too long (max 500 chars)");
+    }
+
+    return itemErrors;
+};
 
 // Education
     //School Name
@@ -442,7 +543,6 @@ export const validateResume = (resume: string): { itemErrors: string[] } => {
     const trimmed = resume.trim();
 
     if (trimmed.length === 0) {
-        itemErrors.push("Resume link cannot be empty");
         return { itemErrors };
     }
 

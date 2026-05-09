@@ -43,7 +43,7 @@ const BioComponent = ({
                     setItemErrors(iErrors)
                 }}
             >
-                Submit Bio
+                Confirm Bio
             </button>
         </>
     );

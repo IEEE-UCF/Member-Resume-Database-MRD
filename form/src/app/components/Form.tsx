@@ -132,7 +132,7 @@ const Form = () => {
                     />
                 </div>
 
-                <button type="submit">Submit</button>
+                <button type="submit">Confirm All Information</button>
             </form>
         </>
     );

@@ -1,150 +1,71 @@
 import { Dispatch, SetStateAction, useState } from "react";
+import { type Form, type Experience } from "../interfaces"
 
-import formStyles from "../styles/form.module.css";
-
-import { setClubDetails } from "../utils/onChanges";
-import {
-    validateClubName,
-    validateClubDescription,
-    validateClubTitle,
-} from "../utils/validations";
-
-import {
-    type Experience,
-    type Form,
-    createEmptyExperience,
-} from "../interfaces";
+import ClubComponent from "./ClubComponent";
+import { setClubDetails, addClub, removeClub } from "../utils/onChanges";
+import { validateClubs } from "../utils/validations";
+import { printArray } from "../utils/printArray";
 
 interface ClubsComponentProps {
     clubs: Experience[];
     setFormData: Dispatch<SetStateAction<Form>>;
 }
 
-const ClubsComponent = ({ clubs, setFormData }: ClubsComponentProps) => {
-    const [clubErrors, setClubErrors] = useState<
-        { name: string; description: string; title: string }[]
-    >(
-        clubs.map(() => ({
-            name: "",
-            description: "",
-            title: "",
-        })),
-    );
-
-    const validateSingleClub = (index: number) => {
-        const club = clubs[index];
-        const newErrors = [...clubErrors];
-
-        newErrors[index] = {
-            name: validateClubName(club.name) ? "" : "Club name is invalid.",
-            description: validateClubDescription(club.description)
-                ? ""
-                : "Club description is invalid.",
-            title: validateClubTitle(club.title)
-                ? ""
-                : "Club title is invalid.",
-        };
-
-        setClubErrors(newErrors);
-    };
+const ClubsComponent = ({ 
+    clubs, 
+    setFormData 
+}: ClubsComponentProps) => {
+    const [sectionErrors, setSectionErrors] = useState<string[]>([])
+    const [itemErrors, setItemErrors] = useState<string[][]>(clubs.map(() => []))
 
     return (
         <>
             <h3>Clubs</h3>
-            {clubs.map((club, index) => (
-                <div
-                    key={`clubs[${index}]`}
-                    className={`${formStyles.child} ${formStyles.club}`}
-                >
-                    <h4>Club {index + 1}</h4>
 
-                    <input
-                        type="text"
-                        name={`clubs[${index}].name`}
-                        placeholder="Club Name"
-                        value={club.name}
-                        onChange={(e) =>
-                            setClubDetails(
-                                index,
-                                "name",
-                                e.target.value,
-                                setFormData,
-                            )
-                        }
-                    />
+            {
+                sectionErrors.length > 0 && 
+                (<>
+                    <p>CLUBS SECTION IS NOT VALID BECAUSE:</p>
+                    {printArray(sectionErrors, "Clubs")}
+                </>)
+            }
 
-                    <input
-                        type="text"
-                        name={`clubs[${index}].title`}
-                        placeholder="Your Title"
-                        value={club.title}
-                        onChange={(e) =>
-                            setClubDetails(
-                                index,
-                                "title",
-                                e.target.value,
-                                setFormData,
-                            )
-                        }
-                    />
-
-                    <textarea
-                        name={`clubs[${index}].description`}
-                        placeholder="Description"
-                        value={club.description}
-                        onChange={(e) =>
-                            setClubDetails(
-                                index,
-                                "description",
-                                e.target.value,
-                                setFormData,
-                            )
-                        }
-                        rows={3}
-                    />
-
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            validateSingleClub(index);
+            {clubs.map((club, index) => {
+                return (
+                    <ClubComponent
+                        key={index}
+                        club={club}
+                        index={index}
+                        errors={itemErrors[index] || []}
+                        onUpdateField={(field, val) => setClubDetails(index, field, val, setFormData)}
+                        onRemove={() => {
+                            removeClub(index, setFormData);
+                            setItemErrors(prev => prev.filter((_, i) => i !== index));
                         }}
-                    >
-                        Validate Club
-                    </button>
-
-                    {clubErrors[index]?.name && <p>{clubErrors[index].name}</p>}
-                    {clubErrors[index]?.description && (
-                        <p>{clubErrors[index].description}</p>
-                    )}
-                    {clubErrors[index]?.title && (
-                        <p>{clubErrors[index].title}</p>
-                    )}
-
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setFormData((prev) => ({
-                                ...prev,
-                                clubs: prev.clubs.filter((_, i) => i !== index),
-                            }));
-                        }}
-                    >
-                        Remove Club
-                    </button>
-                </div>
-            ))}
-
-            <input
-                type="button"
-                value="Add Club"
+                    />
+                );
+            })}
+            
+            <button
                 onClick={(e) => {
                     e.preventDefault();
-                    setFormData((prev) => ({
-                        ...prev,
-                        clubs: [...prev.clubs, createEmptyExperience()],
-                    }));
+                    addClub(setFormData);
+                    setItemErrors(prev => [...prev, []]);
                 }}
-            />
+            >
+                Add Club
+            </button>
+
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    const { sectionErrors: sErrors, itemErrors: iErrors } = validateClubs(clubs);
+                    setSectionErrors(sErrors);
+                    setItemErrors(iErrors);
+                }}
+            >
+                Confirm All Clubs
+            </button>
         </>
     );
 };
