@@ -17,7 +17,7 @@ export interface Education {
         start: string;
         end: string;
     };
-    degree: string;
+    major: string;
     gpa: {
         scale: number;
         gpa: number;
@@ -31,7 +31,7 @@ export const createEmptyEducation = (): Education => {
             start: "",
             end: "",
         },
-        degree: "",
+        major: "",
         gpa: {
             scale: 0,
             gpa: 0,

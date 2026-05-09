@@ -159,7 +159,66 @@ export const validateEducationDescription = (educationDescription: string) => {
     let tooLarge = educationDescription.length > 150
     
     return !tooSmall && !tooLarge
-    }    
+    }
+
+export const validateEducations = (educations: any[]): { sectionErrors: string[], itemErrors: string[][] } => {
+    const sectionErrors: string[] = [];
+    if (educations.length > 5) {
+        sectionErrors.push("You cannot have more than 5 education entries.");
+    }
+
+    const itemErrors = educations.map(edu => validateEducation(edu));
+    
+    return { sectionErrors, itemErrors };
+};
+
+export const validateEducation = (edu: any): string[] => {
+    const itemErrors: string[] = [];
+    
+    const nameTrimmed = edu.name.trim();
+    if (nameTrimmed === "") {
+        itemErrors.push("School Name cannot be empty");
+    } else if (!validateEducationName(edu.name)) {
+        itemErrors.push("School Name is invalid (max 40 chars)");
+    }
+    
+    const { itemErrors: majorErrors } = validateMajor(edu.major);
+    majorErrors.forEach(err => itemErrors.push(`Major: ${err}`));
+
+    const gpa = Number(edu.gpa.gpa);
+    const scale = Number(edu.gpa.scale);
+
+    if (isNaN(gpa) || gpa < 0 || gpa > 10) {
+        itemErrors.push("GPA must be a valid number between 0 and 10");
+    }
+
+    if (![4, 5, 6].includes(scale)) {
+        itemErrors.push("GPA Scale must be 4, 5, or 6");
+    }
+
+    if (!isNaN(gpa) && !isNaN(scale) && gpa > scale) {
+        itemErrors.push(`GPA (${gpa}) cannot be greater than the selected Scale (${scale})`);
+    }
+    
+    // Date validation with "Required" checks
+    if (edu.dates.start.trim() === "") {
+        itemErrors.push("Start Date is required");
+    } else if (!validateEducationStartDate(edu.dates.start, edu.dates.end)) {
+        itemErrors.push("Start Date must be before End Date and valid format");
+    }
+
+    if (edu.dates.end.trim() === "") {
+        itemErrors.push("End Date is required");
+    } else if (!validateEducationEndDate(edu.dates.end, edu.dates.start)) {
+        itemErrors.push("End Date is invalid format");
+    }
+
+    if (edu.description.trim().length > 150) {
+        itemErrors.push("Description is too long (max 150 chars)");
+    }
+
+    return itemErrors;
+};
 
 // Graduation 
 export const validateGraduationYear = (graduationYear: string): { itemErrors: string[] } => {

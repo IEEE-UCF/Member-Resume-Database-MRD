@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 
 import * as validations from "./validations"
 
-import { Form, createEmptyExperience } from "../interfaces";
+import { Form, createEmptyExperience, createEmptyEducation } from "../interfaces";
 
 // Bio          
 export const setBio = (
@@ -50,34 +50,26 @@ export const setEducationName = (
     index: number,
     setFormData: Dispatch<SetStateAction<Form>>
 ) =>{
-    if(validations.validateEducationName(newValue)) {
-        setFormData(
-            (prev) => {
-            const updated = [...prev.educations];
-            updated[index].name = newValue;
-            return { ...prev, educations: updated };
-        }) 
-    }
-    
-
+    setFormData(
+        (prev) => {
+        const updated = [...prev.educations];
+        updated[index].name = newValue;
+        return { ...prev, educations: updated };
+    }) 
 }
 
-        //Degree
-export const setEducationDegree = (
+        //Major
+export const setEducationMajor = (
     newValue: string,
     index: number,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-    if(validations.validateEducationDegree(newValue)) {
     setFormData((prev) => {
         const updated = [...prev.educations];
-        updated[index].degree = newValue;
+        updated[index].major = newValue;
         return { ...prev, educations: updated };
     })
-}     
 }
-
-
 
         //GPA
 export const setEducationGPA = (
@@ -85,15 +77,12 @@ export const setEducationGPA = (
     index: number,
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
-
     const gpaNum = Number(newValue);
-    if(validations.validateEducationGPA(newValue)){
     setFormData((prev) => {
         const updated = [...prev.educations];
         updated[index].gpa.gpa = gpaNum;
         return { ...prev, educations: updated };
     })
-}
 }
 
         //GPA Scale
@@ -103,13 +92,11 @@ export const setEducationScale = (
     setFormData: Dispatch<SetStateAction<Form>>
 ) => {
     const scaleNum = Number(newValue);
-    if(validations.validateEducationScale(newValue)){
     setFormData((prev) => {
         const updated = [...prev.educations];
         updated[index].gpa.scale = scaleNum;
         return { ...prev, educations: updated };
     })  
-}
 }
 
     //Start Date 
@@ -120,11 +107,6 @@ export const setEducationScale = (
       ) => {
         setFormData((prev) => {
           const updated = [...prev.educations];
-          const currentEnd = updated[index].dates.end;
-      
-          
-          if (!validations.validateEducationStartDate(newValue, currentEnd)) return prev;
-      
           updated[index].dates.start = newValue;
           return { ...prev, educations: updated };
         });
@@ -139,10 +121,6 @@ export const setEducationEndDate = (
 ) => {
   setFormData((prev) => {
     const updated = [...prev.educations];
-    const currentStart = updated[index].dates.start;
-
-    if (!validations.validateEducationEndDate(newValue, currentStart)) return prev;
-
     updated[index].dates.end = newValue;
     return { ...prev, educations: updated };
   });
@@ -154,14 +132,31 @@ export const setEducationDescription = (
     index: number,
     setFormData: Dispatch <SetStateAction<Form>>
 ) => {
-    if(validations.validateEducationDescription(newValue)){
     setFormData((prev) => {
         const updated = [...prev.educations];
         updated[index].description = newValue;
         return { ...prev, educations: updated };
     })
 }
-}
+
+export const addEducation = (
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => ({
+        ...prev,
+        educations: [...prev.educations, createEmptyEducation()]
+    }));
+};
+
+export const removeEducation = (
+    index: number,
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    setFormData((prev) => ({
+        ...prev,
+        educations: prev.educations.filter((_, i) => i !== index)
+    }));
+};
 
 // Graduation 
 export const setGraduationYear = (
