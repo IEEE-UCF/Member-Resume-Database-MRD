@@ -261,6 +261,17 @@ export const setSchoolYear = (
 
 
 // Skills
+export const setSkills = (
+    newValue: string,
+    setFormData: Dispatch<SetStateAction<Form>>
+) => {
+    const skillsArray = newValue.split(",").map(s => s.trim());
+    setFormData((prev) => ({
+        ...prev,
+        skills: skillsArray
+    }));
+};
+
 export const setSkill = (
     index: number,
     value: string,

@@ -1,85 +1,38 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { type Form } from "../interfaces"
+import { type Form } from "../interfaces";
 
-import { setSkill } from "../utils/onChanges";
-import { validateSkill } from "../utils/validations";
-import { printArray } from "../utils/printArray";
+import SkillComponent from "./SkillComponent";
+
+import { addSkill } from "../utils/onChanges";
 
 interface SkillsComponentProps {
     skills: string[];
     setFormData: Dispatch<SetStateAction<Form>>;
 }
 
-const SkillsComponent = ({ 
-    skills, 
-    setFormData 
-}: SkillsComponentProps) => {
-    const[errors, setErrors] = useState<string[]>([])
-
+const SkillsComponent = ({ skills, setFormData }: SkillsComponentProps) => {
     return (
         <>
             <h3>Skills</h3>
 
-             {
-                errors.length > 0 &&
-                (<>
-                    <p>SKILLS ARE INVALID BECAUSE:</p>
-                    {
-                        printArray(errors, "skills")
-                    }
-                </>)
-            }
-            
             {skills.map((skill, index) => {
                 return (
-                    <div key={`skills[${index}]`}>
-                        <input
-                            type="text"
-                            name={`skills[${index}]`}
-                            value={skill}
-                            onChange={(e) =>
-                                setFormData((prev) => {
-                                    const result = [...prev.skills];
-                                    result[index] = e.target.value;
-                                    return { ...prev, skills: result };
-                                })
-                            }
-                        />
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault()
-                                setFormData((prev) => ({
-                                    ...prev,
-                                    skills: prev.skills.filter((_, i) => i !== index),
-                                }))
-                            }}
-                        >
-                            Remove
-                        </button>
-                    </div>
-                );
+                    <SkillComponent
+                        key={`skills[${index}]`}
+                        skill={skill}
+                        index={index}
+                        setFormData={setFormData}
+                    />
+                )
             })}
             <button
                 onClick={(e) => {
-                    e.preventDefault()
-                    setFormData((prev) => ({
-                        ...prev,
-                        skills: [...prev.skills, ""],
-                    }))
+                    e.preventDefault();
+                    addSkill(setFormData);
                 }}
             >
                 Add Skill
             </button>
-            <button
-                onClick={(e)=> {
-                    e.preventDefault()
-                    setErrors(validateSkill(skills))
-                }}
-            >
-                Submit
-            </button>
-
-
         </>
     );
 };

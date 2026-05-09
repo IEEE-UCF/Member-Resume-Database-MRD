@@ -384,20 +384,18 @@ export const validateSchoolYear = (schoolYear: string): string[] => {
 
 
 // Skills
-export const validateSkill = (skills: string[]): string[] => {
+export const validateSkill = (skill: string): string[] => {
     const errors: string[] = []
 
-    let tooLong = false
-    skills.forEach(skill => {
-        const trimmed = skill.trim();
-
-        if(trimmed.length >= 50){
-            tooLong = true
-        }
-    })
+    let tooLong = skill.trim().length > 50
+    let tooShort = skill.trim().length < 1
 
     if(tooLong){
-        errors.push("A skills length is too long")
+        errors.push("The skill length is too long")
+    }
+    
+    if(tooShort){
+        errors.push("A skill cannot be empty")
     }
     
     return errors
