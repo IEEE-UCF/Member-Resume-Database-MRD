@@ -272,8 +272,14 @@ export const validateName = (name: string): string[] => {
 export const validatePicture = (picture: File): string[] => {
     const errors: string[] = []
     let tooLarge = picture.size > 5 * 1024 * 1024; // 5MB
+    let isNotImage = !picture.type.startsWith("image/");
+
     if(tooLarge){
         errors.push ("Picture too large")
+    }
+
+    if(isNotImage){
+        errors.push ("File is not a valid image")
     }
 
     return errors

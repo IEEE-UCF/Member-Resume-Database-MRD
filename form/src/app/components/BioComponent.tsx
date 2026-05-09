@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import type { Form } from "../interfaces";
 
-import { setBio } from "../utils/onChanges";
+import { setBio } from "../utils/onChanges"
 import { validateBio } from "../utils/validations";
 import { printArray } from "../utils/printArray";
 
@@ -11,7 +11,7 @@ type BioComponentProps = {
 };
 
 const BioComponent = ({ 
-    bio, 
+    bio,
     setFormData, 
 }: BioComponentProps) => {
     const [errors, setErrors] = useState<string[]>([])

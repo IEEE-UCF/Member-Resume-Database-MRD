@@ -26,7 +26,7 @@ const NameComponent = ({
                     <p>NAME IS NOT VALID BECAUSE:</p>
 
                     {
-                        printArray(errors, "Bio")
+                        printArray(errors, "Name")
                     }
                 </>)
             }

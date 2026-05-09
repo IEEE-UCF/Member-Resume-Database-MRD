@@ -4,16 +4,16 @@ import { type Form } from "../interfaces"
 import { setPicture } from "../utils/onChanges";
 import { validatePicture } from "../utils/validations";
 import { printArray } from "../utils/printArray";
+
 interface PictureComponentProps {
-    file: File;
     setFormData: Dispatch<SetStateAction<Form>>;
 }
 
 const PictureComponent = ({ 
-    file,
     setFormData 
 }: PictureComponentProps) => {
-    const[errors, setErrors] = useState<string[]>([])
+    const [errors, setErrors] = useState<string[]>([])
+    const [tempFile, setTempFile] = useState<File | null>(null)
 
     return (
         <>
@@ -25,7 +25,7 @@ const PictureComponent = ({
                     <p>PICTURE IS INVALID BECAUSE:</p>
 
                     {
-                        printArray(errors, "file")
+                        printArray(errors, "Picture")
                     }
                 </>)
             }
@@ -36,6 +36,7 @@ const PictureComponent = ({
                 onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
+                        setTempFile(file);
                         setPicture(file, setFormData);
                     }
                 }}
@@ -43,8 +44,10 @@ const PictureComponent = ({
             <button
                 onClick={(e) =>{
                     e.preventDefault()
-                    if(file) {
-                    setErrors(validatePicture(file))
+                    if(tempFile) {
+                        setErrors(validatePicture(tempFile))
+                    } else {
+                        setErrors(["No picture selected"])
                     }
                 }}
             >
