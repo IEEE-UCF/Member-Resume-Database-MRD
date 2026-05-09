@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { type Form } from "../interfaces";
 
 import SkillComponent from "./SkillComponent";
