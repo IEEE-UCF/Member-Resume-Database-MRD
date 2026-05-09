@@ -1,6 +1,6 @@
-# Member Portfolio Service (MPS) - Version 1 Milestones
+# Member Resume Database (MRD) - Version 1 Milestones
 
-Version 1 represents the initial foundation of the Member Portfolio Service. The primary achievement of this version was the creation of a modular, symmetric UI prototype that proved the concept of an isolated, component-based form system.
+Version 1 represents the initial foundation of the Member Resume Database. The primary achievement of this version was the creation of a modular, symmetric UI prototype that proved the concept of an isolated, component-based form system.
 
 ## 1. Architectural Modularity
 
